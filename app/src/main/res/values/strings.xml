@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Troca de Jogos</string>
+    <string name="title_activity_cadastro_usuario">Usuario</string>
+    <string name="cadNome">Nome</string>
+    <string name="cadCep">CEP</string>
+    <string name="cadEmail">Email</string>
+    <string name="cadTelefone">Telefone</string>
+    <string name="cadSenha">Senha</string>
+    <string name="cadConfirmarSenha">Confirmar Senha</string>
+    <string name="cadOK">OK</string>
+    <string name="cadCancelar">Cancelar</string>
+    <string name="cadButton">Registrar</string>
+</resources>

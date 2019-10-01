@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "108558198447",
+    "firebase_url": "https://troca-de-jogos.firebaseio.com",
+    "project_id": "troca-de-jogos",
+    "storage_bucket": "troca-de-jogos.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:108558198447:android:786454aa67c332133b165a",
+        "android_client_info": {
+          "package_name": "com.res.trocadejogos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "108558198447-1925uvgmar1sddjqto0honeijkcmmjbd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.res.trocadejogos",
+            "certificate_hash": "a22c5a0384130026822cfeb3a0a2c5d5aa0ff7e7"
+          }
+        },
+        {
+          "client_id": "108558198447-c27u4ontvc0arvpa8ug58qaqo86t2qav.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMjt1HU59Q_oqjH3yme2Jsmt36WCagVD8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "108558198447-c27u4ontvc0arvpa8ug58qaqo86t2qav.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
