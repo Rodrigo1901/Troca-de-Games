@@ -71,10 +71,10 @@ public class CadastroUsuario extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), dataSnapshot.child("email").getValue().toString(), Toast.LENGTH_LONG).show();
 
                         boolean email = false;
-                       // for (DataSnapshot userSnapshot: dataSnapshot.getChildren()) {
-                       //    Usuario user1 = userSnapshot.getValue(Usuario.class);
-                       //    Toast.makeText(getApplicationContext(), user1.toString(), Toast.LENGTH_LONG).show();
-                       // }
+                        for (DataSnapshot userSnapshot: dataSnapshot.getChildren()) {
+                           Usuario user1 = userSnapshot.getValue(Usuario.class);
+                           Toast.makeText(getApplicationContext(), user1.toString(), Toast.LENGTH_LONG).show();
+                        }
 
                             if(fieldEmail.getText().equals(dataSnapshot.child("email"))){
 
