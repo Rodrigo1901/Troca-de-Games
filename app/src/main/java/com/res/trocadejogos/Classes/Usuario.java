@@ -2,23 +2,14 @@ package com.res.trocadejogos.Classes;
 
 public class Usuario {
 
-    private String userID;
     private String senha;
     private String nome;
     private String cep;
     private String email;
-    private String telefone;
 
     public Usuario() {
     }
 
-    public String getUserID() {
-        return userID;
-    }
-
-    public void setUserID(String userID) {
-        this.userID = userID;
-    }
 
     public String getSenha() {
         return senha;
@@ -52,11 +43,4 @@ public class Usuario {
         this.email = email;
     }
 
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
 }
