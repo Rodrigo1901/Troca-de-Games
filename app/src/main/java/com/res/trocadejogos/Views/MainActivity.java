@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        cad = findViewById(R.id.textCadButton);
+          cad = findViewById(R.id.textCadButton);
 
         cad.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,7 +39,5 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-
     }
 }

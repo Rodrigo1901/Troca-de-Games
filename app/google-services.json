@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "108558198447-3kb1qvif2jfe169r3gd48rvi6rsmr4pb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.res.trocadejogos",
+            "certificate_hash": "819d4a36ef726128aaa2a6a2f5b907cc7c478da6"
+          }
+        },
+        {
           "client_id": "108558198447-1925uvgmar1sddjqto0honeijkcmmjbd.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

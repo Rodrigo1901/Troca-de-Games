@@ -48,24 +48,23 @@ public class CadastroUsuario extends AppCompatActivity {
     private FirebaseAuth autenticacao;
     private Usuario usuario;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro_usuario);
 
-        fieldNome = (EditText)findViewById(R.id.fieldNome);
-        fieldCEP =  (EditText)findViewById(R.id.fieldCEP);
-        fieldEmail =(EditText)findViewById(R.id.fieldEmail);
-        fieldSenha =(EditText)findViewById(R.id.fieldSenha);
-        fieldConfirmarSenha = (EditText)findViewById(R.id.fieldConfirmarSenha);
+        fieldNome = (EditText) findViewById(R.id.fieldNome);
+        fieldCEP = (EditText) findViewById(R.id.fieldCEP);
+        fieldEmail = (EditText) findViewById(R.id.fieldEmail);
+        fieldSenha = (EditText) findViewById(R.id.fieldSenha);
+        fieldConfirmarSenha = (EditText) findViewById(R.id.fieldConfirmarSenha);
         cadButton = findViewById(R.id.cadButton);
 
         cadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                if(validaCampos()){
+                if (validaCampos()) {
                     usuario = new Usuario();
                     usuario.setNome(fieldNome.getText().toString());
                     usuario.setCep(fieldCEP.getText().toString());
@@ -75,7 +74,6 @@ public class CadastroUsuario extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     private boolean validaCampos() {
@@ -108,20 +106,19 @@ public class CadastroUsuario extends AppCompatActivity {
         return res;
     }
 
-    private boolean isCampoVazio(String valor){
+    private boolean isCampoVazio(String valor) {
 
         boolean resultado = (TextUtils.isEmpty(valor) || valor.trim().isEmpty());
         return resultado;
-
     }
 
-    private boolean isSenhasIguais(String confirmarSenha, String senha){
+    private boolean isSenhasIguais(String confirmarSenha, String senha) {
 
         boolean resultado = (confirmarSenha.equals(senha));
         return resultado;
     }
 
-    private void cadastrarUsuario(){
+    private void cadastrarUsuario() {
 
         autenticacao = ConfigFirebase.getFirebaseAutenticacao();
         autenticacao.createUserWithEmailAndPassword(
@@ -129,21 +126,21 @@ public class CadastroUsuario extends AppCompatActivity {
         ).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
 
                     Toast.makeText(CadastroUsuario.this, "Sucesso ao cadastrar usuário", Toast.LENGTH_SHORT).show();
 
-                }else{
+                } else {
                     String excecao = "";
-                    try{
+                    try {
                         throw task.getException();
-                    }catch (FirebaseAuthWeakPasswordException e){
+                    } catch (FirebaseAuthWeakPasswordException e) {
                         excecao = "Senha fraca!";
-                    }catch (FirebaseAuthInvalidCredentialsException e){
+                    } catch (FirebaseAuthInvalidCredentialsException e) {
                         excecao = "Email inválido";
-                    }catch (FirebaseAuthUserCollisionException e){
+                    } catch (FirebaseAuthUserCollisionException e) {
                         excecao = "Conta já cadastrada";
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         excecao = "Erro ao cadastrar usuário: " + e.getMessage();
                         e.printStackTrace();
                     }
@@ -151,10 +148,8 @@ public class CadastroUsuario extends AppCompatActivity {
                     Toast.makeText(CadastroUsuario.this, excecao, Toast.LENGTH_SHORT).show();
 
                 }
-
             }
         });
-
     }
 
     @Override
@@ -171,11 +166,10 @@ public class CadastroUsuario extends AppCompatActivity {
 
         int id = item.getItemId();
 
-        if(id == R.id.action_cancelar){
+        if (id == R.id.action_cancelar) {
             finish();
         }
 
         return super.onOptionsItemSelected(item);
     }
-
 }
