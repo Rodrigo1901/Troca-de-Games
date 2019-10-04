@@ -9,8 +9,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Views.Biblioteca"></activity>
-        <activity android:name=".Views.CadastroUsuario" />
+        <activity android:name=".Views.Perfil"
+            android:parentActivityName=".Views.Biblioteca"></activity>
+        <activity android:name=".Views.Biblioteca" />
+        <activity
+            android:name=".Views.CadastroUsuario"
+            android:parentActivityName=".Views.MainActivity" />
         <activity android:name=".Views.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

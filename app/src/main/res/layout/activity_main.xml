@@ -64,17 +64,17 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:layout_marginLeft="40dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="80dp"
         android:layout_marginEnd="40dp"
         android:layout_marginRight="40dp"
         android:drawableEnd="@drawable/ic_account_circle_black_24dp"
+        android:drawableRight="@drawable/ic_account_circle_black_24dp"
         android:ems="10"
         android:hint="Endereço email"
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline2"
-        android:drawableRight="@drawable/ic_account_circle_black_24dp" />
+        app:layout_constraintTop_toTopOf="@+id/guideline2" />
 
     <EditText
         android:id="@+id/fieldLoginSenha"
@@ -96,17 +96,17 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="70dp"
         android:layout_marginLeft="70dp"
-        android:layout_marginTop="28dp"
         android:layout_marginEnd="70dp"
         android:layout_marginRight="70dp"
+        android:layout_marginBottom="30dp"
         android:background="@color/colorPrimary"
         android:text="Entrar"
         android:textColor="@android:color/background_light"
         android:textSize="18sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/guideline4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline3" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

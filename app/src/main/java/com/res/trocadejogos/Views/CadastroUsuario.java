@@ -2,6 +2,7 @@ package com.res.trocadejogos.Views;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 
 import android.os.Bundle;
@@ -13,6 +14,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.github.rtoshiro.util.format.MaskFormatter;
+import com.github.rtoshiro.util.format.SimpleMaskFormatter;
+import com.github.rtoshiro.util.format.text.MaskTextWatcher;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -40,12 +44,21 @@ public class CadastroUsuario extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro_usuario);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("Cadastro");
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         fieldNome = (EditText) findViewById(R.id.fieldNome);
         fieldCEP = (EditText) findViewById(R.id.fieldCEP);
         fieldEmail = (EditText) findViewById(R.id.fieldLoginEmail);
         fieldSenha = (EditText) findViewById(R.id.fieldLoginSenha);
         fieldConfirmarSenha = (EditText) findViewById(R.id.fieldConfirmarSenha);
         cadButton = findViewById(R.id.cadButton);
+
+        SimpleMaskFormatter smf = new SimpleMaskFormatter("NNNNN-NNN");
+        MaskTextWatcher mtw = new MaskTextWatcher(fieldCEP, smf);
+        fieldCEP.addTextChangedListener(mtw);
 
         cadButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,6 +74,8 @@ public class CadastroUsuario extends AppCompatActivity {
                 }
             }
         });
+
+
     }
 
     private boolean validaCampos() {
@@ -139,11 +154,12 @@ public class CadastroUsuario extends AppCompatActivity {
         });
     }
 
+    /*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_cad_usuario, menu);
+        inflater.inflate(R.menu.menu_biblioteca, menu);
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -158,5 +174,5 @@ public class CadastroUsuario extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 }

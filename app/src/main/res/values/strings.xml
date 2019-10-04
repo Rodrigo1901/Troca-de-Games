@@ -7,7 +7,8 @@
     <string name="cadTelefone">Telefone</string>
     <string name="cadSenha">Senha</string>
     <string name="cadConfirmarSenha">Confirmar Senha</string>
-    <string name="cadOK">OK</string>
-    <string name="cadCancelar">Cancelar</string>
+    <string name="deslogar">Sair</string>
+    <string name="pesquisar">pesquisar</string>
+    <string name="perfil">Perfil</string>
     <string name="registrarButton">Registre-se com o email</string>
 </resources>
