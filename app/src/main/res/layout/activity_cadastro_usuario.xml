@@ -71,7 +71,7 @@
                 android:text="@string/cadEmail" />
 
             <EditText
-                android:id="@+id/fieldEmail"
+                android:id="@+id/fieldLoginEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -93,7 +93,7 @@
                 android:text="@string/cadSenha" />
 
             <EditText
-                android:id="@+id/fieldSenha"
+                android:id="@+id/fieldLoginSenha"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -136,17 +136,19 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:background="@color/colorPrimary">
 
                     <TextView
                         android:id="@+id/textView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif"
+                        android:fontFamily="sans-serif-medium"
                         android:text="REGISTRAR"
 
                         android:textColor="@android:color/background_light"
                         android:textSize="18sp"
+                        android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"

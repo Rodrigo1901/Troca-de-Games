@@ -4,11 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Patterns;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -18,24 +15,14 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.res.trocadejogos.Classes.Usuario;
 import com.res.trocadejogos.Config.ConfigFirebase;
 import com.res.trocadejogos.R;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 public class CadastroUsuario extends AppCompatActivity {
 
@@ -55,8 +42,8 @@ public class CadastroUsuario extends AppCompatActivity {
 
         fieldNome = (EditText) findViewById(R.id.fieldNome);
         fieldCEP = (EditText) findViewById(R.id.fieldCEP);
-        fieldEmail = (EditText) findViewById(R.id.fieldEmail);
-        fieldSenha = (EditText) findViewById(R.id.fieldSenha);
+        fieldEmail = (EditText) findViewById(R.id.fieldLoginEmail);
+        fieldSenha = (EditText) findViewById(R.id.fieldLoginSenha);
         fieldConfirmarSenha = (EditText) findViewById(R.id.fieldConfirmarSenha);
         cadButton = findViewById(R.id.cadButton);
 

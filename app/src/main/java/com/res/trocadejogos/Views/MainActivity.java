@@ -1,23 +1,13 @@
 package com.res.trocadejogos.Views;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Patterns;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.res.trocadejogos.R;
-
-import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-          cad = findViewById(R.id.textCadButton);
+          cad = findViewById(R.id.textRegistrarButton);
 
         cad.setOnClickListener(new View.OnClickListener() {
             @Override

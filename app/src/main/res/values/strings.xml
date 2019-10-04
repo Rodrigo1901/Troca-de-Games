@@ -9,5 +9,5 @@
     <string name="cadConfirmarSenha">Confirmar Senha</string>
     <string name="cadOK">OK</string>
     <string name="cadCancelar">Cancelar</string>
-    <string name="cadButton">Registrar</string>
+    <string name="registrarButton">Registre-se com o email</string>
 </resources>
