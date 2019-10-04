@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
 
                 Intent it = new Intent(MainActivity.this, CadastroUsuario.class);
                 startActivity(it);
-
             }
         });
 
@@ -38,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
 
                 Intent it = new Intent(MainActivity.this, Biblioteca.class);
                 startActivity(it);
-
             }
         });
     }
