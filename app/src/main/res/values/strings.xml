@@ -11,4 +11,5 @@
     <string name="pesquisar">pesquisar</string>
     <string name="perfil">Perfil</string>
     <string name="registrarButton">Registre-se com o email</string>
+    <string name="button_alterar_senha">ALTERAR SENHA</string>
 </resources>

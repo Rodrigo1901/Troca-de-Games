@@ -19,10 +19,11 @@ public class Biblioteca extends AppCompatActivity {
 
     private Toolbar toolbar;
     private FirebaseAuth autenticacao;
+    private long backPressedTime;
+    private Toast backToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_biblioteca);
 
@@ -31,6 +32,7 @@ public class Biblioteca extends AppCompatActivity {
         androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Biblioteca");
         setSupportActionBar(toolbar);
+
     }
 
     @Override
@@ -45,46 +47,50 @@ public class Biblioteca extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-        switch (item.getItemId()) {
+        switch (item.getItemId()){
+
             case R.id.action_deslogar:
                 deslogarUsuario();
-                verificarLogin(); // Verificar se usuário está logado
                 finish();
                 break;
-            case R.id.action_perfil:
+
+            case R.id.action_perfil  :
                 editPerfil();
                 break;
+
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    public void deslogarUsuario() {
-
+    public void deslogarUsuario(){
         try {
+
             autenticacao.signOut();
-        } catch (Exception e) {
+
+        }catch (Exception e){
             e.printStackTrace();
         }
+
     }
 
-    public void editPerfil() {
-
+    public void editPerfil(){
         Intent it = new Intent(Biblioteca.this, Perfil.class);
         startActivity(it);
     }
 
-    public void verificarLogin() {
-
-        autenticacao = ConfigFirebase.getFirebaseAutenticacao();
-        if (autenticacao.getCurrentUser() != null) {
-            Toast.makeText(this, "Usuário logado!", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "Usuário deslogado!", Toast.LENGTH_SHORT).show();
-        }
-    }
-
+    @Override
     public void onBackPressed() {
-        finishAffinity();
+        if(backPressedTime + 2000> System.currentTimeMillis()){
+            backToast.cancel();
+            moveTaskToBack(true);
+            return;
+
+        }else{
+            backToast = Toast.makeText(Biblioteca.this, "Aperte novamente para sair", Toast.LENGTH_SHORT);
+            backToast.show();
+        }
+
+        backPressedTime = System.currentTimeMillis();
     }
 }
