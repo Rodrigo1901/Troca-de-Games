@@ -20,22 +20,22 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        registrar = findViewById(R.id.textRegistrarButton);
-        registrar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent it = new Intent(MainActivity.this, CadastroUsuario.class);
-                startActivity(it);
-            }
-        });
-
         entrar = findViewById(R.id.buttonEntrar);
         entrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 Intent it = new Intent(MainActivity.this, Biblioteca.class);
+                startActivity(it);
+            }
+        });
+
+        registrar = findViewById(R.id.textRegistrarButton);
+        registrar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent it = new Intent(MainActivity.this, CadastroUsuario.class);
                 startActivity(it);
             }
         });
