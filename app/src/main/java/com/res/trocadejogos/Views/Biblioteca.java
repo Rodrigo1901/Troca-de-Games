@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -47,6 +48,7 @@ public class Biblioteca extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_deslogar:
                 deslogarUsuario();
+                verificarLogin(); // Verificar se usuário está logado
                 finish();
                 break;
             case R.id.action_perfil:
@@ -72,7 +74,17 @@ public class Biblioteca extends AppCompatActivity {
         startActivity(it);
     }
 
-    public void onBackPressed(){
+    public void verificarLogin() {
+
+        autenticacao = ConfigFirebase.getFirebaseAutenticacao();
+        if (autenticacao.getCurrentUser() != null) {
+            Toast.makeText(this, "Usuário logado!", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Usuário deslogado!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void onBackPressed() {
         finishAffinity();
     }
 }

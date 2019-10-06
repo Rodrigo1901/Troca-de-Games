@@ -1,32 +1,32 @@
 package com.res.trocadejogos.Views;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
+        import androidx.annotation.NonNull;
+        import androidx.appcompat.app.AppCompatActivity;
+        import androidx.appcompat.widget.Toolbar;
+        import androidx.cardview.widget.CardView;
 
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.Toast;
+        import android.os.Bundle;
+        import android.text.TextUtils;
+        import android.view.Menu;
+        import android.view.MenuInflater;
+        import android.view.MenuItem;
+        import android.view.View;
+        import android.widget.EditText;
+        import android.widget.Toast;
 
-import com.github.rtoshiro.util.format.MaskFormatter;
-import com.github.rtoshiro.util.format.SimpleMaskFormatter;
-import com.github.rtoshiro.util.format.text.MaskTextWatcher;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseAuthUserCollisionException;
-import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
-import com.res.trocadejogos.Classes.Usuario;
-import com.res.trocadejogos.Config.ConfigFirebase;
-import com.res.trocadejogos.R;
+        import com.github.rtoshiro.util.format.MaskFormatter;
+        import com.github.rtoshiro.util.format.SimpleMaskFormatter;
+        import com.github.rtoshiro.util.format.text.MaskTextWatcher;
+        import com.google.android.gms.tasks.OnCompleteListener;
+        import com.google.android.gms.tasks.Task;
+        import com.google.firebase.auth.AuthResult;
+        import com.google.firebase.auth.FirebaseAuth;
+        import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+        import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+        import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
+        import com.res.trocadejogos.Classes.Usuario;
+        import com.res.trocadejogos.Config.ConfigFirebase;
+        import com.res.trocadejogos.R;
 
 public class CadastroUsuario extends AppCompatActivity {
 
@@ -130,7 +130,7 @@ public class CadastroUsuario extends AppCompatActivity {
                 if (task.isSuccessful()) {
 
                     Toast.makeText(CadastroUsuario.this, "Sucesso ao cadastrar usuário!", Toast.LENGTH_SHORT).show();
-
+                    finish(); // Fecha a tela de cadastro e vai para a tela principal
                 } else {
                     String excecao = "";
                     try {
