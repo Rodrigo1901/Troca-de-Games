@@ -49,7 +49,6 @@ public class Biblioteca extends AppCompatActivity {
                 deslogarUsuario();
                 finish();
                 break;
-
             case R.id.action_perfil:
                 editPerfil();
                 break;
@@ -71,5 +70,9 @@ public class Biblioteca extends AppCompatActivity {
 
         Intent it = new Intent(Biblioteca.this, Perfil.class);
         startActivity(it);
+    }
+
+    public void onBackPressed(){
+        finishAffinity();
     }
 }
