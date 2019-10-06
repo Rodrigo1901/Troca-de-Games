@@ -7,14 +7,10 @@ import androidx.cardview.widget.CardView;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.github.rtoshiro.util.format.MaskFormatter;
 import com.github.rtoshiro.util.format.SimpleMaskFormatter;
 import com.github.rtoshiro.util.format.text.MaskTextWatcher;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -50,10 +46,11 @@ public class CadastroUsuario extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        fieldNome = (EditText) findViewById(R.id.fieldNome);
-        fieldCEP = (EditText) findViewById(R.id.fieldCEP);
-        fieldEmail = (EditText) findViewById(R.id.fieldLoginEmail);
-        fieldSenha = (EditText) findViewById(R.id.fieldLoginSenha);
+
+        fieldNome = (EditText) findViewById(R.id.fieldEditNome);
+        fieldCEP = (EditText) findViewById(R.id.fieldEditCEP);
+        fieldEmail = (EditText) findViewById(R.id.fieldEmail);
+        fieldSenha = (EditText) findViewById(R.id.fieldSenha);
         fieldConfirmarSenha = (EditText) findViewById(R.id.fieldConfirmarSenha);
         cadButton = findViewById(R.id.cadButton);
 

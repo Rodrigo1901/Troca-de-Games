@@ -59,7 +59,7 @@
         app:layout_constraintGuide_end="1dp" />
 
     <EditText
-        android:id="@+id/fieldLoginEmail"
+        android:id="@+id/fieldEmail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
@@ -78,7 +78,7 @@
         app:layout_constraintTop_toTopOf="@+id/guideline2" />
 
     <EditText
-        android:id="@+id/fieldLoginSenha"
+        android:id="@+id/fieldSenha"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
@@ -87,9 +87,9 @@
         android:ems="10"
         android:hint="Senha"
         android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="@+id/fieldLoginEmail"
-        app:layout_constraintStart_toStartOf="@+id/fieldLoginEmail"
-        app:layout_constraintTop_toBottomOf="@+id/fieldLoginEmail" />
+        app:layout_constraintEnd_toEndOf="@+id/fieldEmail"
+        app:layout_constraintStart_toStartOf="@+id/fieldEmail"
+        app:layout_constraintTop_toBottomOf="@+id/fieldEmail" />
 
     <Button
         android:id="@+id/buttonEntrar"
@@ -110,6 +110,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fieldLoginSenha" />
+        app:layout_constraintTop_toBottomOf="@+id/fieldSenha" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
