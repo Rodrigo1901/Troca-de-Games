@@ -41,6 +41,7 @@ public class CadastroUsuario extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro_usuario);
 
@@ -74,8 +75,6 @@ public class CadastroUsuario extends AppCompatActivity {
                 }
             }
         });
-
-
     }
 
     private boolean validaCampos() {
@@ -89,16 +88,16 @@ public class CadastroUsuario extends AppCompatActivity {
 
         if (isCampoVazio(nome)) {
             fieldNome.requestFocus();
-            Toast.makeText(CadastroUsuario.this, "Nome invalido", Toast.LENGTH_SHORT).show();
+            Toast.makeText(CadastroUsuario.this, "Nome inválido!", Toast.LENGTH_SHORT).show();
         } else if (isCampoVazio(cep)) {
             fieldCEP.requestFocus();
-            Toast.makeText(CadastroUsuario.this, "Cep invalido", Toast.LENGTH_SHORT).show();
+            Toast.makeText(CadastroUsuario.this, "CEP inválido!", Toast.LENGTH_SHORT).show();
         } else if (isCampoVazio(email)) {
             fieldEmail.requestFocus();
-            Toast.makeText(CadastroUsuario.this, "Email invalido", Toast.LENGTH_SHORT).show();
+            Toast.makeText(CadastroUsuario.this, "Email inválido!", Toast.LENGTH_SHORT).show();
         } else if (isCampoVazio(senha)) {
             fieldSenha.requestFocus();
-            Toast.makeText(CadastroUsuario.this, "Senha invalida", Toast.LENGTH_SHORT).show();
+            Toast.makeText(CadastroUsuario.this, "Senha inválida!", Toast.LENGTH_SHORT).show();
         } else if (!isSenhasIguais(confirmarSenha, senha)) {
             Toast.makeText(CadastroUsuario.this, "As senhas não coincidem!", Toast.LENGTH_SHORT).show();
             fieldConfirmarSenha.requestFocus();
@@ -130,7 +129,7 @@ public class CadastroUsuario extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
 
-                    Toast.makeText(CadastroUsuario.this, "Sucesso ao cadastrar usuário", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CadastroUsuario.this, "Sucesso ao cadastrar usuário!", Toast.LENGTH_SHORT).show();
 
                 } else {
                     String excecao = "";
@@ -139,16 +138,15 @@ public class CadastroUsuario extends AppCompatActivity {
                     } catch (FirebaseAuthWeakPasswordException e) {
                         excecao = "Senha fraca!";
                     } catch (FirebaseAuthInvalidCredentialsException e) {
-                        excecao = "Email inválido";
+                        excecao = "Email inválido!";
                     } catch (FirebaseAuthUserCollisionException e) {
-                        excecao = "Conta já cadastrada";
+                        excecao = "Conta já cadastrada!";
                     } catch (Exception e) {
                         excecao = "Erro ao cadastrar usuário: " + e.getMessage();
                         e.printStackTrace();
                     }
 
                     Toast.makeText(CadastroUsuario.this, excecao, Toast.LENGTH_SHORT).show();
-
                 }
             }
         });

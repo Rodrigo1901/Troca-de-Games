@@ -21,6 +21,7 @@ public class Biblioteca extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_biblioteca);
 
@@ -29,7 +30,6 @@ public class Biblioteca extends AppCompatActivity {
         androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Biblioteca");
         setSupportActionBar(toolbar);
-
     }
 
     @Override
@@ -44,36 +44,31 @@ public class Biblioteca extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-        switch (item.getItemId()){
-
+        switch (item.getItemId()) {
             case R.id.action_deslogar:
                 deslogarUsuario();
                 finish();
                 break;
 
-            case R.id.action_perfil  :
+            case R.id.action_perfil:
                 editPerfil();
                 break;
-
-
-
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    public void deslogarUsuario(){
+    public void deslogarUsuario() {
+
         try {
-
             autenticacao.signOut();
-
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
-    public void editPerfil(){
+    public void editPerfil() {
+
         Intent it = new Intent(Biblioteca.this, Perfil.class);
         startActivity(it);
     }
