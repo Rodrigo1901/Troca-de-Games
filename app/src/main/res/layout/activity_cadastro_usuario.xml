@@ -36,7 +36,7 @@
                 android:text="@string/cadNome" />
 
             <EditText
-                android:id="@+id/fieldEditNome"
+                android:id="@+id/fieldCadNome"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -58,7 +58,7 @@
                 android:text="@string/cadCep" />
 
             <EditText
-                android:id="@+id/fieldEditCEP"
+                android:id="@+id/fieldCadCEP"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -80,7 +80,7 @@
                 android:text="@string/cadEmail" />
 
             <EditText
-                android:id="@+id/fieldEmail"
+                android:id="@+id/fieldCadEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -102,7 +102,7 @@
                 android:text="@string/cadSenha" />
 
             <EditText
-                android:id="@+id/fieldSenha"
+                android:id="@+id/fieldCadSenha"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -124,7 +124,7 @@
                 android:text="@string/cadConfirmarSenha" />
 
             <EditText
-                android:id="@+id/fieldConfirmarSenha"
+                android:id="@+id/fieldCadConfirmarSenha"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"

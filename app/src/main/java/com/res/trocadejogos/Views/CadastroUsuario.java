@@ -1,32 +1,28 @@
 package com.res.trocadejogos.Views;
 
-        import androidx.annotation.NonNull;
-        import androidx.appcompat.app.AppCompatActivity;
-        import androidx.appcompat.widget.Toolbar;
-        import androidx.cardview.widget.CardView;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 
-        import android.os.Bundle;
-        import android.text.TextUtils;
-        import android.view.Menu;
-        import android.view.MenuInflater;
-        import android.view.MenuItem;
-        import android.view.View;
-        import android.widget.EditText;
-        import android.widget.Toast;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
-        import com.github.rtoshiro.util.format.MaskFormatter;
-        import com.github.rtoshiro.util.format.SimpleMaskFormatter;
-        import com.github.rtoshiro.util.format.text.MaskTextWatcher;
-        import com.google.android.gms.tasks.OnCompleteListener;
-        import com.google.android.gms.tasks.Task;
-        import com.google.firebase.auth.AuthResult;
-        import com.google.firebase.auth.FirebaseAuth;
-        import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-        import com.google.firebase.auth.FirebaseAuthUserCollisionException;
-        import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
-        import com.res.trocadejogos.Classes.Usuario;
-        import com.res.trocadejogos.Config.ConfigFirebase;
-        import com.res.trocadejogos.R;
+import com.github.rtoshiro.util.format.SimpleMaskFormatter;
+import com.github.rtoshiro.util.format.text.MaskTextWatcher;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
+import com.res.trocadejogos.Classes.Usuario;
+import com.res.trocadejogos.Config.ConfigFirebase;
+import com.res.trocadejogos.R;
 
 public class CadastroUsuario extends AppCompatActivity {
 
@@ -50,11 +46,11 @@ public class CadastroUsuario extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        fieldNome = (EditText) findViewById(R.id.fieldNome);
-        fieldCEP = (EditText) findViewById(R.id.fieldCEP);
-        fieldEmail = (EditText) findViewById(R.id.fieldLoginEmail);
-        fieldSenha = (EditText) findViewById(R.id.fieldLoginSenha);
-        fieldConfirmarSenha = (EditText) findViewById(R.id.fieldConfirmarSenha);
+        fieldNome = (EditText) findViewById(R.id.fieldCadNome);
+        fieldCEP = (EditText) findViewById(R.id.fieldCadCEP);
+        fieldEmail = (EditText) findViewById(R.id.fieldCadEmail);
+        fieldSenha = (EditText) findViewById(R.id.fieldCadSenha);
+        fieldConfirmarSenha = (EditText) findViewById(R.id.fieldCadConfirmarSenha);
         cadButton = findViewById(R.id.cadButton);
 
         SimpleMaskFormatter smf = new SimpleMaskFormatter("NNNNN-NNN");
