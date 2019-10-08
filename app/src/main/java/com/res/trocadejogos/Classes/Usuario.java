@@ -1,6 +1,7 @@
 package com.res.trocadejogos.Classes;
 
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Exclude;
 import com.res.trocadejogos.Config.ConfigFirebase;
 
 public class Usuario {
@@ -23,6 +24,7 @@ public class Usuario {
 
     }
 
+    @Exclude
     public String getId() {
         return id;
     }
@@ -31,6 +33,7 @@ public class Usuario {
         this.id = id;
     }
 
+    @Exclude
     public String getSenha() {
         return senha;
     }

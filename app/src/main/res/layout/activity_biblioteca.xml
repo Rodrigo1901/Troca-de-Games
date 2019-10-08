@@ -7,7 +7,6 @@
     tools:context=".Views.Biblioteca">
 
     <include
-        android:id="@+id/include"
         layout="@layout/toolbar"></include>
 
 
