@@ -17,7 +17,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Conversas"></activity>
+        <activity android:name=".Views.Conversas"></activity>
         <activity
             android:name=".Views.Perfil"
             android:parentActivityName=".Views.Biblioteca" />
