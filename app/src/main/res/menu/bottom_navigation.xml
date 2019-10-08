@@ -11,6 +11,6 @@
 
     <item android:id="@+id/menu_chat"
         android:icon="@drawable/ic_chat_black_24dp"
-        android:title="Bate-Bapo" />
+        android:title="Conversas" />
 
 </menu>
