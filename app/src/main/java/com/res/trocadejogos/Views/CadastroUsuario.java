@@ -21,6 +21,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.res.trocadejogos.Classes.Usuario;
+import com.res.trocadejogos.Config.Base64Custom;
 import com.res.trocadejogos.Config.ConfigFirebase;
 import com.res.trocadejogos.R;
 
@@ -67,7 +68,7 @@ public class CadastroUsuario extends AppCompatActivity {
                     usuario.setCep(fieldCEP.getText().toString());
                     usuario.setEmail(fieldEmail.getText().toString());
                     usuario.setSenha(fieldSenha.getText().toString());
-                    cadastrarUsuario();
+                    cadastrarUsuario(usuario);
                 }
             }
         });
@@ -115,7 +116,7 @@ public class CadastroUsuario extends AppCompatActivity {
         return resultado;
     }
 
-    private void cadastrarUsuario() {
+    private void cadastrarUsuario(final Usuario usuario) {
 
         autenticacao = ConfigFirebase.getFirebaseAutenticacao();
         autenticacao.createUserWithEmailAndPassword(
@@ -127,6 +128,17 @@ public class CadastroUsuario extends AppCompatActivity {
 
                     Toast.makeText(CadastroUsuario.this, "Sucesso ao cadastrar usuário!", Toast.LENGTH_SHORT).show();
                     finish(); // Fecha a tela de cadastro e vai para a tela principal
+
+                    try{
+
+                        String idUser = Base64Custom.codificarBase64(usuario.getEmail());
+                        usuario.setId(idUser);
+                        usuario.salvar();
+
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
                 } else {
                     String excecao = "";
                     try {

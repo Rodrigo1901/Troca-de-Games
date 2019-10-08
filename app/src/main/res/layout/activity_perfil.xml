@@ -115,6 +115,8 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/button_alterar_senha"
                 android:layout_gravity="center"
+                android:textSize="18sp"
+                android:textStyle="bold"
                 android:background="@color/colorPrimary"
                 android:textColor="@android:color/background_light"/>
 

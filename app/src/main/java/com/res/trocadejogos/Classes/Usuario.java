@@ -1,13 +1,34 @@
 package com.res.trocadejogos.Classes;
 
+import com.google.firebase.database.DatabaseReference;
+import com.res.trocadejogos.Config.ConfigFirebase;
+
 public class Usuario {
 
     private String senha;
+    private String id;
     private String nome;
     private String cep;
     private String email;
 
     public Usuario() {
+    }
+
+    public void salvar(){
+
+        DatabaseReference firebaseRef = ConfigFirebase.getFirebaseDatabase();
+        DatabaseReference usuario = firebaseRef.child("users").child(getId());
+
+        usuario.setValue(this);
+
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getSenha() {
