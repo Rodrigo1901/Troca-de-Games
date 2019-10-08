@@ -23,6 +23,7 @@
         app:layout_constraintTop_toTopOf="@+id/include" />
 
     <ScrollView
+        android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="220dp"
@@ -50,8 +51,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:layout_marginRight="16dp">
+                android:layout_marginRight="16dp"
+                android:orientation="horizontal">
 
                 <EditText
                     android:id="@+id/fieldEditNome"
@@ -86,8 +87,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:layout_marginRight="16dp">
+                android:layout_marginRight="16dp"
+                android:orientation="horizontal">
 
                 <EditText
                     android:id="@+id/fieldEditCEP"
@@ -112,17 +113,33 @@
                 android:id="@+id/button"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/button_alterar_senha"
                 android:layout_gravity="center"
-                android:textSize="18sp"
-                android:textStyle="bold"
+                android:layout_marginTop="16dp"
                 android:background="@color/colorPrimary"
-                android:textColor="@android:color/background_light"/>
+                android:text="@string/button_alterar_senha"
+                android:textColor="@android:color/background_light"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
         </LinearLayout>
 
 
     </ScrollView>
+
+    <ImageButton
+        android:id="@+id/camButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/profile_image"
+        app:layout_constraintStart_toStartOf="@+id/profile_image"
+        app:srcCompat="@drawable/ic_camera_24dp" />
+
+    <ImageButton
+        android:id="@+id/galleryButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/profile_image"
+        app:layout_constraintEnd_toEndOf="@+id/profile_image"
+        app:srcCompat="@drawable/ic_photo_24dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
