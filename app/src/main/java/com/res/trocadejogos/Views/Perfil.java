@@ -15,14 +15,22 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.github.rtoshiro.util.format.SimpleMaskFormatter;
+import com.github.rtoshiro.util.format.text.MaskTextWatcher;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -51,6 +59,12 @@ public class Perfil extends AppCompatActivity {
     private CircleImageView circleImageViewPerfil;
     private StorageReference storageReference;
     private String identificadorUsuario;
+    private DatabaseReference databaseReference;
+    private EditText cepField;
+    private EditText nameField;
+    private ImageView editNome;
+    private ImageView editCep;
+    private Usuario usuarioLogado;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,28 +72,102 @@ public class Perfil extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil);
 
+        databaseReference = ConfigFirebase.getFirebaseDatabase();
         storageReference = ConfigFirebase.getFirebaseStorage();
         identificadorUsuario = FirebaseUser.getIdentificadorUsuario();
+
+
+        storageReference.child("imagens").child("perfil").child(identificadorUsuario + ".jpeg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Glide.with(Perfil.this).load(uri).into(circleImageViewPerfil);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                circleImageViewPerfil.setImageResource(R.drawable.blank_profile_picture);
+            }
+        });
 
         Permission.validarPermissoes(necessaryPermissions, this, 1);
 
         camButton = findViewById(R.id.camButton);
         galleryButton = findViewById(R.id.galleryButton);
         circleImageViewPerfil = findViewById(R.id.profileImage);
+        cepField = findViewById(R.id.fieldEditCEP);
+        nameField = findViewById(R.id.fieldEditNome);
+        editNome = findViewById(R.id.confirmNome);
+        editCep = findViewById(R.id.confirmCEP);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Perfil");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        com.google.firebase.auth.FirebaseUser usuario = FirebaseUser.getCurrentUser();
-        Uri url = usuario.getPhotoUrl();
+        SimpleMaskFormatter smf = new SimpleMaskFormatter("NNNNN-NNN");
+        MaskTextWatcher mtw = new MaskTextWatcher(cepField, smf);
+        cepField.addTextChangedListener(mtw);
 
-        if(url != null ){
-            Glide.with(Perfil.this).load(url).into(circleImageViewPerfil);
-        }else{
-            circleImageViewPerfil.setImageResource(R.drawable.blank_profile_picture);
-        }
+        DatabaseReference refName = databaseReference.child("users").child(identificadorUsuario).child("nome");
+        DatabaseReference refCep = databaseReference.child("users").child(identificadorUsuario).child("cep");
+        refCep.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String cep = dataSnapshot.getValue(String.class);
+                cepField.setText(cep);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        refName.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String name = dataSnapshot.getValue(String.class);
+                nameField.setText(name);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        Usuario user = new Usuario();
+        user.setNome(nameField.getText().toString());
+        user.setCep(cepField.getText().toString());
+        usuarioLogado = user;
+
+        editNome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String nome = nameField.getText().toString();
+                usuarioLogado.setNome(nome);
+                usuarioLogado.atualizarNome();
+                Toast.makeText(Perfil.this, "Nome atualizado",Toast.LENGTH_SHORT).show();
+
+
+            }
+        });
+
+        editCep.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String cep = cepField.getText().toString();
+                usuarioLogado.setCep(cep);
+                usuarioLogado.atualizarCep();
+                Toast.makeText(Perfil.this, "CEP atualizado",Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+
 
         camButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,16 +239,6 @@ public class Perfil extends AppCompatActivity {
 
                             Toast.makeText(Perfil.this, "Sucesso ao definir imagem", Toast.LENGTH_SHORT).show();
 
-                            imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri url) {
-
-                                updateProfilePicture(url);
-
-
-                                }
-                            });
-
                         }
                     });
 
@@ -172,10 +250,6 @@ public class Perfil extends AppCompatActivity {
 
         }
 
-    }
-
-    public void updateProfilePicture(Uri url){
-        FirebaseUser.updateProfileImage(url);
     }
 
     @Override

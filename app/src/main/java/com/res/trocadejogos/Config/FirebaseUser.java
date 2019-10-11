@@ -50,6 +50,28 @@ public class FirebaseUser {
 
     }
 
+    public static boolean updateProfileName(String nome){
+
+        try {
+
+            com.google.firebase.auth.FirebaseUser user = getCurrentUser();
+            UserProfileChangeRequest profile = new UserProfileChangeRequest.Builder().setDisplayName(nome).build();
+            user.updateProfile(profile).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if(task.isSuccessful()){
+                        Log.d("Perfil","Erro ao atualizar perfil.");
+                    }
+                }
+            });
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
 
 
 

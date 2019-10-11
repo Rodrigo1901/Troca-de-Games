@@ -23,6 +23,7 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.res.trocadejogos.Classes.Usuario;
 import com.res.trocadejogos.Config.Base64Custom;
 import com.res.trocadejogos.Config.ConfigFirebase;
+import com.res.trocadejogos.Config.FirebaseUser;
 import com.res.trocadejogos.R;
 
 public class CadastroUsuario extends AppCompatActivity {
@@ -127,6 +128,7 @@ public class CadastroUsuario extends AppCompatActivity {
                 if (task.isSuccessful()) {
 
                     Toast.makeText(CadastroUsuario.this, "Sucesso ao cadastrar usuário!", Toast.LENGTH_SHORT).show();
+                    FirebaseUser.updateProfileName(usuario.getNome());
                     finish(); // Fecha a tela de cadastro e vai para a tela principal
 
                     try{
