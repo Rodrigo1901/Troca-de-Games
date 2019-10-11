@@ -16,13 +16,25 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.res.trocadejogos.Classes.Usuario;
+import com.res.trocadejogos.Config.Base64Custom;
 import com.res.trocadejogos.Config.ConfigFirebase;
+import com.res.trocadejogos.Config.FirebaseUser;
 import com.res.trocadejogos.Config.Permission;
 import com.res.trocadejogos.R;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -46,7 +58,8 @@ public class Perfil extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil);
 
-        storageReference = ConfigFirebase.getFirebaseSotrage();
+        storageReference = ConfigFirebase.getFirebaseStorage();
+        identificadorUsuario = FirebaseUser.getIdentificadorUsuario();
 
         Permission.validarPermissoes(necessaryPermissions, this, 1);
 
@@ -58,6 +71,15 @@ public class Perfil extends AppCompatActivity {
         toolbar.setTitle("Perfil");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        com.google.firebase.auth.FirebaseUser usuario = FirebaseUser.getCurrentUser();
+        Uri url = usuario.getPhotoUrl();
+
+        if(url != null ){
+            Glide.with(Perfil.this).load(url).into(circleImageViewPerfil);
+        }else{
+            circleImageViewPerfil.setImageResource(R.drawable.blank_profile_picture);
+        }
 
         camButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,10 +129,40 @@ public class Perfil extends AppCompatActivity {
 
                 if(image != null){
 
-
-
                     circleImageViewPerfil.setImageBitmap(image);
-                    StorageReference imageRef = storageReference.child("imagens").child("perfil");
+
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    image.compress(Bitmap.CompressFormat.JPEG, 50, baos);
+                    byte[] imageData = baos.toByteArray();
+
+                    final StorageReference imageRef = storageReference.child("imagens").child("perfil").child(identificadorUsuario + ".jpeg");
+
+                    UploadTask uploadTask = imageRef.putBytes(imageData);
+                    uploadTask.addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+
+                            Toast.makeText(Perfil.this, "Falha ao definir imagem", Toast.LENGTH_SHORT).show();
+
+                        }
+                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(final UploadTask.TaskSnapshot taskSnapshot) {
+
+                            Toast.makeText(Perfil.this, "Sucesso ao definir imagem", Toast.LENGTH_SHORT).show();
+
+                            imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri url) {
+
+                                updateProfilePicture(url);
+
+
+                                }
+                            });
+
+                        }
+                    });
 
                 }
 
@@ -120,6 +172,10 @@ public class Perfil extends AppCompatActivity {
 
         }
 
+    }
+
+    public void updateProfilePicture(Uri url){
+        FirebaseUser.updateProfileImage(url);
     }
 
     @Override

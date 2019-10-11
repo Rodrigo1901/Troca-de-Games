@@ -27,7 +27,7 @@ public class ConfigFirebase {
         }
         return database;
     }
-    public static StorageReference getFirebaseSotrage(){
+    public static StorageReference getFirebaseStorage(){
         if (storage == null) {
             storage = FirebaseStorage.getInstance().getReference();
         }
