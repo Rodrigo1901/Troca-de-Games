@@ -62,6 +62,7 @@
             android:clickable="true"
             app:backgroundTint="@color/colorPrimary"
             app:fabSize="auto"
+            app:maxImageSize="30dp"
             app:srcCompat="@drawable/ic_send_white_24dp" />
     </LinearLayout>
 </LinearLayout>
