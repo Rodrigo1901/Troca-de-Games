@@ -2,6 +2,7 @@ package com.res.trocadejogos.Views;
 
 import android.os.Bundle;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -13,6 +14,8 @@ import android.view.View;
 import com.res.trocadejogos.R;
 
 public class Chat extends AppCompatActivity {
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

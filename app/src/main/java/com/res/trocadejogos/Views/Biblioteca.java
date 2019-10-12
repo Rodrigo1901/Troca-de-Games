@@ -2,6 +2,7 @@ package com.res.trocadejogos.Views;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.res.trocadejogos.Config.ConfigFirebase;
 import com.res.trocadejogos.R;
@@ -21,6 +23,7 @@ public class Biblioteca extends AppCompatActivity {
     private FirebaseAuth autenticacao;
     private long backPressedTime;
     private Toast backToast;
+    private BottomNavigationView bottonNav;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,10 +32,29 @@ public class Biblioteca extends AppCompatActivity {
 
         autenticacao = ConfigFirebase.getFirebaseAutenticacao();
 
+        bottonNav = findViewById(R.id.bottom_navigation);
+        bottonNav.setOnNavigationItemSelectedListener(navListener);
+
         androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Biblioteca");
         setSupportActionBar(toolbar);
     }
+
+    private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+
+            switch (menuItem.getItemId()){
+                case R.id.menu_chat:
+
+                    Intent it = new Intent(Biblioteca.this, Chat.class);
+                    startActivity(it);
+
+            }
+
+            return true;
+        }
+    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
