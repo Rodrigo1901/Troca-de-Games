@@ -128,7 +128,6 @@ public class CadastroUsuario extends AppCompatActivity {
                 if (task.isSuccessful()) {
 
                     Toast.makeText(CadastroUsuario.this, "Sucesso ao cadastrar usuário!", Toast.LENGTH_SHORT).show();
-                    FirebaseUser.updateProfileName(usuario.getNome());
                     finish(); // Fecha a tela de cadastro e vai para a tela principal
 
                     try{
