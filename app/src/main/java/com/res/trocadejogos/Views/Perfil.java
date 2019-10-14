@@ -15,6 +15,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -23,6 +24,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.github.rtoshiro.util.format.SimpleMaskFormatter;
 import com.github.rtoshiro.util.format.text.MaskTextWatcher;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -59,12 +61,14 @@ public class Perfil extends AppCompatActivity {
     private CircleImageView circleImageViewPerfil;
     private StorageReference storageReference;
     private String identificadorUsuario;
+    private FirebaseAuth autenticacao;
     private DatabaseReference databaseReference;
     private EditText cepField;
     private EditText nameField;
     private ImageView editNome;
     private ImageView editCep;
     private Usuario usuarioLogado;
+    private Button alterarSenha;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +76,7 @@ public class Perfil extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil);
 
+        autenticacao = ConfigFirebase.getFirebaseAutenticacao();
         databaseReference = ConfigFirebase.getFirebaseDatabase();
         storageReference = ConfigFirebase.getFirebaseStorage();
         identificadorUsuario = FirebaseUser.getIdentificadorUsuario();
@@ -98,6 +103,7 @@ public class Perfil extends AppCompatActivity {
         nameField = findViewById(R.id.fieldEditNome);
         editNome = findViewById(R.id.confirmNome);
         editCep = findViewById(R.id.confirmCEP);
+        alterarSenha = findViewById(R.id.changePassword);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Perfil");
@@ -191,6 +197,36 @@ public class Perfil extends AppCompatActivity {
             }
 
         });
+
+        alterarSenha.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                autenticacao.sendPasswordResetEmail(autenticacao.getCurrentUser().getEmail()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+
+                            AlertDialog.Builder builder = new AlertDialog.Builder(Perfil.this);
+                            builder.setTitle("Aviso!");
+                            builder.setMessage("Um Email para redefinição de senha foi enviado para sua caixa de entrada!");
+                            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    finish();
+                                }
+                            });
+
+                            AlertDialog dialog = builder.create();
+                            dialog.show();
+
+                        }
+                    }
+                });
+
+            }
+        });
+
     }
 
     @Override
