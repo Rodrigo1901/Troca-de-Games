@@ -102,7 +102,7 @@ public class Biblioteca extends AppCompatActivity {
             switch (menuItem.getItemId()){
                 case R.id.menu_chat:
 
-                    Intent it = new Intent(Biblioteca.this, Chat.class);
+                    Intent it = new Intent(Biblioteca.this, Conversas.class);
                     startActivity(it);
 
             }
