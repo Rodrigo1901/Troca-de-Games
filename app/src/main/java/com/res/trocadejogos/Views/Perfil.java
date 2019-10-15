@@ -155,7 +155,7 @@ public class Perfil extends AppCompatActivity {
                 String nome = nameField.getText().toString();
                 usuarioLogado.setNome(nome);
                 usuarioLogado.atualizarNome();
-                Toast.makeText(Perfil.this, "Nome atualizado",Toast.LENGTH_SHORT).show();
+                Toast.makeText(Perfil.this, "Nome atualizado", Toast.LENGTH_SHORT).show();
 
 
             }
@@ -168,11 +168,10 @@ public class Perfil extends AppCompatActivity {
                 String cep = cepField.getText().toString();
                 usuarioLogado.setCep(cep);
                 usuarioLogado.atualizarCep();
-                Toast.makeText(Perfil.this, "CEP atualizado",Toast.LENGTH_SHORT).show();
+                Toast.makeText(Perfil.this, "CEP atualizado", Toast.LENGTH_SHORT).show();
 
             }
         });
-
 
 
         camButton.setOnClickListener(new View.OnClickListener() {
@@ -205,15 +204,15 @@ public class Perfil extends AppCompatActivity {
                 autenticacao.sendPasswordResetEmail(autenticacao.getCurrentUser().getEmail()).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful()){
+                        if (task.isSuccessful()) {
 
                             AlertDialog.Builder builder = new AlertDialog.Builder(Perfil.this);
-                            builder.setTitle("Aviso!");
-                            builder.setMessage("Um Email para redefinição de senha foi enviado para sua caixa de entrada!");
+                            builder.setTitle("Aviso");
+                            builder.setMessage("Um email para redefinição de senha foi enviado para sua caixa de entrada!");
                             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                    finish();
+                                    //finish();
                                 }
                             });
 
@@ -223,35 +222,33 @@ public class Perfil extends AppCompatActivity {
                         }
                     }
                 });
-
             }
         });
-
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(resultCode == RESULT_OK){
+        if (resultCode == RESULT_OK) {
             Bitmap image = null;
 
             try {
 
-             switch (requestCode){
+                switch (requestCode) {
 
-                 case camSelect:
+                    case camSelect:
 
-                     image =(Bitmap)data.getExtras().get("data");
-                     break;
+                        image = (Bitmap) data.getExtras().get("data");
+                        break;
 
-                 case gallerySelect:
-                     Uri imageLocation = data.getData();
-                     image = MediaStore.Images.Media.getBitmap(getContentResolver(), imageLocation);
-                     break;
+                    case gallerySelect:
+                        Uri imageLocation = data.getData();
+                        image = MediaStore.Images.Media.getBitmap(getContentResolver(), imageLocation);
+                        break;
                 }
 
-                if(image != null){
+                if (image != null) {
 
                     circleImageViewPerfil.setImageBitmap(image);
 
@@ -274,13 +271,11 @@ public class Perfil extends AppCompatActivity {
                         public void onSuccess(final UploadTask.TaskSnapshot taskSnapshot) {
 
                             Toast.makeText(Perfil.this, "Sucesso ao definir imagem", Toast.LENGTH_SHORT).show();
-
                         }
                     });
-
                 }
 
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -292,16 +287,14 @@ public class Perfil extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        for(int permissionResult: grantResults){
-            if(permissionResult == PackageManager.PERMISSION_DENIED){
+        for (int permissionResult : grantResults) {
+            if (permissionResult == PackageManager.PERMISSION_DENIED) {
                 permissionAlert();
             }
         }
-
     }
 
-
-    private void permissionAlert(){
+    private void permissionAlert() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Alerta!");
@@ -309,12 +302,11 @@ public class Perfil extends AppCompatActivity {
         builder.setPositiveButton("CONFIRMAR", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-               finish();
+                finish();
             }
         });
 
         AlertDialog dialog = builder.create();
         dialog.show();
-
     }
 }

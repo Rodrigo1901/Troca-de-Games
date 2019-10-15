@@ -15,11 +15,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthEmailException;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
-import com.google.firebase.auth.FirebaseAuthUserCollisionException;
-import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.res.trocadejogos.Classes.Usuario;
 import com.res.trocadejogos.Config.ConfigFirebase;
 import com.res.trocadejogos.R;
@@ -28,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
     private EditText campoEmail, campoSenha;
     private Button botaoEntrar;
-    private TextView registrar;
+    private TextView registrar, recuperarSenha;
     private FirebaseAuth autenticacao;
     private Usuario usuario;
 
@@ -64,6 +61,17 @@ public class MainActivity extends AppCompatActivity {
                     campoEmail.requestFocus();
                     Toast.makeText(MainActivity.this, "Preencha o email!", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        /* Chamada 'botão' Recuperar Senha */
+        recuperarSenha = findViewById(R.id.textRecuperarSenha);
+        recuperarSenha.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent it = new Intent(MainActivity.this, RedefinirSenha.class);
+                startActivity(it);
             }
         });
 
