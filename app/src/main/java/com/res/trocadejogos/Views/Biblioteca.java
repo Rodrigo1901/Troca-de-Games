@@ -65,7 +65,7 @@ public class Biblioteca extends AppCompatActivity {
 
         spinner = new SpinnerDialog(Biblioteca.this, (ArrayList<String>) listaNome,"Selecione um jogo","Fechar");
 
-        dataRef.child("games").addListenerForSingleValueEvent(new ValueEventListener() {
+        dataRef.child("gameList").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 List<Game> games = new ArrayList<>();
