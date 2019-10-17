@@ -20,7 +20,9 @@
         <activity
             android:name=".Views.RedefinirSenha"
             android:parentActivityName=".Views.MainActivity"></activity>
-        <activity android:name=".Views.AdicionarJogo" />
+        <activity
+            android:parentActivityName=".Views.Biblioteca"
+            android:name=".Views.AdicionarJogo" />
         <activity
             android:name=".Views.Chat"
             android:label="@string/title_activity_chat"

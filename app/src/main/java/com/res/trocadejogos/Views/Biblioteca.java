@@ -27,8 +27,10 @@ import com.res.trocadejogos.Config.ConfigFirebase;
 import com.res.trocadejogos.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import in.galaxyofandroid.spinerdialog.OnSpinerItemClick;
 import in.galaxyofandroid.spinerdialog.SpinnerDialog;
 
 public class Biblioteca extends AppCompatActivity {
@@ -42,6 +44,7 @@ public class Biblioteca extends AppCompatActivity {
     private BottomNavigationView bottonNav;
     private DatabaseReference dataRef;
     private FloatingActionButton botaoAdd;
+    public static String selectedGame;
     List<Game> games;
 
     @Override
@@ -60,6 +63,8 @@ public class Biblioteca extends AppCompatActivity {
         toolbar.setTitle("Biblioteca");
         setSupportActionBar(toolbar);
 
+        spinner = new SpinnerDialog(Biblioteca.this, (ArrayList<String>) listaNome,"Selecione um jogo","Fechar");
+
         dataRef.child("games").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -77,12 +82,21 @@ public class Biblioteca extends AppCompatActivity {
             }
         });
 
-        spinner = new SpinnerDialog(Biblioteca.this, (ArrayList<String>) listaNome,"Selecione um jogo","Fechar");
-
         botaoAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                spinner.showSpinerDialog();
+            }
+        });
+
+        spinner.bindOnSpinerListener(new OnSpinerItemClick() {
+            @Override
+            public void onClick(String item, int position) {
+
+                selectedGame = item;
+                Intent it = new Intent(Biblioteca.this, AdicionarJogo.class);
+                startActivity(it);
+
             }
         });
 
@@ -93,6 +107,7 @@ public class Biblioteca extends AppCompatActivity {
         for(Game game:gameList){
             listaNome.add(game.getNome());
         }
+        Collections.sort(listaNome);
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -175,4 +190,5 @@ public class Biblioteca extends AppCompatActivity {
             Toast.makeText(this, "Usuário deslogado!", Toast.LENGTH_SHORT).show();
         }
     }
+
 }
