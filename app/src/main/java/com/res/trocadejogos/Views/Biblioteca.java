@@ -2,7 +2,9 @@ package com.res.trocadejogos.Views;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,10 +12,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
-import android.widget.Toolbar;
+
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -22,8 +23,11 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.StorageReference;
+import com.res.trocadejogos.Adapter.AdapterBiblioteca;
 import com.res.trocadejogos.Classes.Game;
 import com.res.trocadejogos.Config.ConfigFirebase;
+import com.res.trocadejogos.Config.FirebaseUser;
 import com.res.trocadejogos.R;
 
 import java.util.ArrayList;
@@ -36,16 +40,21 @@ import in.galaxyofandroid.spinerdialog.SpinnerDialog;
 public class Biblioteca extends AppCompatActivity {
 
     List<String> listaNome = new ArrayList<>();
-    private Toolbar toolbar;
+    List<Game> games = new ArrayList<>();
     private FirebaseAuth autenticacao;
     private long backPressedTime;
     private Toast backToast;
     private SpinnerDialog spinner;
     private BottomNavigationView bottonNav;
+    private String identificadorUsuario;
     private DatabaseReference dataRef;
     private FloatingActionButton botaoAdd;
     public static String selectedGame;
-    List<Game> games;
+    private RecyclerView listaJogos;
+    private StorageReference storageReference;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +63,10 @@ public class Biblioteca extends AppCompatActivity {
 
         autenticacao = ConfigFirebase.getFirebaseAutenticacao();
         dataRef = ConfigFirebase.getFirebaseDatabase();
+        identificadorUsuario = FirebaseUser.getIdentificadorUsuario();
+        storageReference = ConfigFirebase.getFirebaseStorage();
 
+        listaJogos = findViewById(R.id.listaGames);
         botaoAdd = findViewById(R.id.addGameButton);
         bottonNav = findViewById(R.id.bottom_navigation);
         bottonNav.setOnNavigationItemSelectedListener(navListener);
@@ -65,7 +77,31 @@ public class Biblioteca extends AppCompatActivity {
 
         spinner = new SpinnerDialog(Biblioteca.this, (ArrayList<String>) listaNome,"Selecione um jogo","Fechar");
 
-        dataRef.child("gameList").addListenerForSingleValueEvent(new ValueEventListener() {
+        dataRef.child("library").child(identificadorUsuario).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<Game> gameList = new ArrayList<>();
+                for(DataSnapshot gameSnapShot:dataSnapshot.getChildren()){
+                    gameList.add(gameSnapShot.getValue(Game.class));
+                }
+
+                AdapterBiblioteca adapter = new AdapterBiblioteca(Biblioteca.this, gameList);
+
+                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+                listaJogos.setLayoutManager(layoutManager);
+                listaJogos.setHasFixedSize(true);
+                listaJogos.setAdapter(adapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        listaJogos.addItemDecoration(new DividerItemDecoration(this, LinearLayout.VERTICAL));
+
+        dataRef.child("gameList").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 List<Game> games = new ArrayList<>();
@@ -73,6 +109,7 @@ public class Biblioteca extends AppCompatActivity {
                     games.add(gameSnapShot.getValue(Game.class));
                 }
                 List(games);
+
 
             }
 
@@ -109,6 +146,22 @@ public class Biblioteca extends AppCompatActivity {
         }
         Collections.sort(listaNome);
     }
+
+    /*
+    public void fotos(List<Game> gameList){
+        gamelib = gameList;
+        for(Game game:gameList){
+            listaNomeLib.add((game.getNome()));
+            storageReference.child("imagens").child("Games").child(game.getNome()+ ".jpeg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    urlCapa.add(uri);
+                }
+            });
+        }
+    }
+
+     */
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
