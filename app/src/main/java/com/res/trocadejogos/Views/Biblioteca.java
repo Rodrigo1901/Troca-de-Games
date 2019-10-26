@@ -165,10 +165,12 @@ public class Biblioteca extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
             switch (menuItem.getItemId()){
+                case R.id.menu_map:
+                    Intent it1 = new Intent(Biblioteca.this, Mapa.class);
+                    startActivity(it1);
                 case R.id.menu_chat:
-
-                    Intent it = new Intent(Biblioteca.this, Conversas.class);
-                    startActivity(it);
+                    Intent it2 = new Intent(Biblioteca.this, Conversas.class);
+                    startActivity(it2);
             }
             return true;
         }
