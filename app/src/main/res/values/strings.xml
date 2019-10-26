@@ -15,4 +15,5 @@
     <string name="button_alterar_senha">ALTERAR SENHA</string>
     <string name="title_activity_chat">Chat</string>
     <string name="addGameButton">CONFIRMAR</string>
+    <string name="deleteButton">REMOVER</string>
 </resources>
