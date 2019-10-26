@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -25,6 +26,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 import com.res.trocadejogos.Adapter.AdapterBiblioteca;
+import com.res.trocadejogos.Adapter.RecyclerItemClickListener;
 import com.res.trocadejogos.Classes.Game;
 import com.res.trocadejogos.Config.ConfigFirebase;
 import com.res.trocadejogos.Config.FirebaseUser;
@@ -72,22 +74,38 @@ public class Biblioteca extends AppCompatActivity {
         toolbar.setTitle("Biblioteca");
         setSupportActionBar(toolbar);
 
-        spinner = new SpinnerDialog(Biblioteca.this, (ArrayList<String>) listaNome,"Selecione um jogo","Fechar");
-
         dataRef.child("library").child(identificadorUsuario).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<Game> gameList = new ArrayList<>();
+                final List<Game> gameList = new ArrayList<>();
                 for(DataSnapshot gameSnapShot:dataSnapshot.getChildren()){
                     gameList.add(gameSnapShot.getValue(Game.class));//lista de jogos que estão na biblioteca do usuario logado
                 }
 
                 AdapterBiblioteca adapter = new AdapterBiblioteca(Biblioteca.this, gameList);
-
                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
                 listaJogos.setLayoutManager(layoutManager);
                 listaJogos.setHasFixedSize(true);
                 listaJogos.setAdapter(adapter);
+                listaJogos.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), listaJogos, new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Game gameClicked = gameList.get(position);
+                        selectedGame = gameClicked.getNome();
+                        Intent it = new Intent(Biblioteca.this, EditarJogo.class);
+                        startActivity(it);
+                    }
+
+                    @Override
+                    public void onLongItemClick(View view, int position) {
+
+                    }
+
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                    }
+                }));
             }
 
             @Override
@@ -112,6 +130,8 @@ public class Biblioteca extends AppCompatActivity {
 
             }
         });
+
+        spinner = new SpinnerDialog(Biblioteca.this, (ArrayList<String>) listaNome,"Selecione um jogo","Fechar");
 
         botaoAdd.setOnClickListener(new View.OnClickListener() {
             @Override
