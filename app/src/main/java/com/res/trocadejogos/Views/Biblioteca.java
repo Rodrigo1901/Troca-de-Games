@@ -53,9 +53,6 @@ public class Biblioteca extends AppCompatActivity {
     private RecyclerView listaJogos;
     private StorageReference storageReference;
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,7 +79,7 @@ public class Biblioteca extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 List<Game> gameList = new ArrayList<>();
                 for(DataSnapshot gameSnapShot:dataSnapshot.getChildren()){
-                    gameList.add(gameSnapShot.getValue(Game.class));
+                    gameList.add(gameSnapShot.getValue(Game.class));//lista de jogos que estão na biblioteca do usuario logado
                 }
 
                 AdapterBiblioteca adapter = new AdapterBiblioteca(Biblioteca.this, gameList);
@@ -98,18 +95,16 @@ public class Biblioteca extends AppCompatActivity {
 
             }
         });
-        
 
         dataRef.child("gameList").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 List<Game> games = new ArrayList<>();
                 for(DataSnapshot gameSnapShot:dataSnapshot.getChildren()){
-                    games.add(gameSnapShot.getValue(Game.class));
+                    games.add(gameSnapShot.getValue(Game.class));//lista de todos os jogos
+                    //games = games - gameList
                 }
                 List(games);
-
-
             }
 
             @Override
@@ -132,35 +127,18 @@ public class Biblioteca extends AppCompatActivity {
                 selectedGame = item;
                 Intent it = new Intent(Biblioteca.this, AdicionarJogo.class);
                 startActivity(it);
-
             }
         });
-
     }
 
     public void List(List<Game> gameList){
+
         games = gameList;
         for(Game game:gameList){
             listaNome.add(game.getNome());
         }
         Collections.sort(listaNome);
     }
-
-    /*
-    public void fotos(List<Game> gameList){
-        gamelib = gameList;
-        for(Game game:gameList){
-            listaNomeLib.add((game.getNome()));
-            storageReference.child("imagens").child("Games").child(game.getNome()+ ".jpeg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                @Override
-                public void onSuccess(Uri uri) {
-                    urlCapa.add(uri);
-                }
-            });
-        }
-    }
-
-     */
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
@@ -171,9 +149,7 @@ public class Biblioteca extends AppCompatActivity {
 
                     Intent it = new Intent(Biblioteca.this, Conversas.class);
                     startActivity(it);
-
             }
-
             return true;
         }
     };
@@ -201,7 +177,6 @@ public class Biblioteca extends AppCompatActivity {
                 editPerfil();
                 break;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -220,6 +195,7 @@ public class Biblioteca extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+
         if (backPressedTime + 2000 > System.currentTimeMillis()) {
             backToast.cancel();
             moveTaskToBack(true);
@@ -229,7 +205,6 @@ public class Biblioteca extends AppCompatActivity {
             backToast = Toast.makeText(Biblioteca.this, "Aperte novamente para sair", Toast.LENGTH_SHORT);
             backToast.show();
         }
-
         backPressedTime = System.currentTimeMillis();
     }
 
@@ -242,5 +217,4 @@ public class Biblioteca extends AppCompatActivity {
             Toast.makeText(this, "Usuário deslogado!", Toast.LENGTH_SHORT).show();
         }
     }
-
 }
