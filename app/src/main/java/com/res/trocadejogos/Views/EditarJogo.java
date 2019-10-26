@@ -1,4 +1,4 @@
-package com.res.trocadejogos;
+package com.res.trocadejogos.Views;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -16,7 +16,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.StorageReference;
 import com.res.trocadejogos.Classes.Game;
 import com.res.trocadejogos.Config.ConfigFirebase;
-import com.res.trocadejogos.Views.Biblioteca;
+import com.res.trocadejogos.R;
 
 public class EditarJogo extends AppCompatActivity {
 

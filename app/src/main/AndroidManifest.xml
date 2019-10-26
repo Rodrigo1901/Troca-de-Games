@@ -16,7 +16,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".EditarJogo"></activity>
+        <activity android:name=".Views.EditarJogo"></activity>
         <activity android:name=".Views.Conversas" />
         <activity
             android:name=".Views.RedefinirSenha"
