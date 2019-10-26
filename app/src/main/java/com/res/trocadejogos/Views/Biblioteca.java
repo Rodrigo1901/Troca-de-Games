@@ -98,8 +98,7 @@ public class Biblioteca extends AppCompatActivity {
 
             }
         });
-
-        listaJogos.addItemDecoration(new DividerItemDecoration(this, LinearLayout.VERTICAL));
+        
 
         dataRef.child("gameList").addValueEventListener(new ValueEventListener() {
             @Override

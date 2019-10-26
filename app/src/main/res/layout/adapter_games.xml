@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="16dp"
-    android:orientation="vertical">
+    android:layout_margin="8dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_margin="8dp"
+        android:orientation="horizontal"
+        android:padding="8dp">
 
         <ImageView
             android:id="@+id/gameImageLib"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            app:srcCompat="@drawable/game_car" />
+            android:src="@drawable/game_car" />
 
         <TextView
             android:id="@+id/gameNameLib"
@@ -29,4 +30,8 @@
             android:textSize="20sp"
             android:textStyle="bold" />
     </LinearLayout>
-</LinearLayout>
+
+</androidx.cardview.widget.CardView>
+
+
+

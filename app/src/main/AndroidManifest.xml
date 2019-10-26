@@ -16,13 +16,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Views.Conversas"></activity>
+        <activity android:name=".EditarJogo"></activity>
+        <activity android:name=".Views.Conversas" />
         <activity
             android:name=".Views.RedefinirSenha"
-            android:parentActivityName=".Views.MainActivity"></activity>
+            android:parentActivityName=".Views.MainActivity" />
         <activity
-            android:parentActivityName=".Views.Biblioteca"
-            android:name=".Views.AdicionarJogo" />
+            android:name=".Views.AdicionarJogo"
+            android:parentActivityName=".Views.Biblioteca" />
         <activity
             android:name=".Views.Chat"
             android:label="@string/title_activity_chat"

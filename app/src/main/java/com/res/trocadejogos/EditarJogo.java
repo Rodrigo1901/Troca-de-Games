@@ -1,4 +1,4 @@
-package com.res.trocadejogos.Views;
+package com.res.trocadejogos;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -16,9 +16,9 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.StorageReference;
 import com.res.trocadejogos.Classes.Game;
 import com.res.trocadejogos.Config.ConfigFirebase;
-import com.res.trocadejogos.R;
+import com.res.trocadejogos.Views.Biblioteca;
 
-public class AdicionarJogo extends AppCompatActivity {
+public class EditarJogo extends AppCompatActivity {
 
     private StorageReference storageReference;
     private ImageView gameImage;
@@ -31,7 +31,7 @@ public class AdicionarJogo extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_adicionar_jogo);
+        setContentView(R.layout.activity_editar_jogo);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Adicionar jogo");
@@ -50,7 +50,7 @@ public class AdicionarJogo extends AppCompatActivity {
         storageReference.child("imagens").child("Games").child(Biblioteca.selectedGame + ".jpeg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Glide.with(AdicionarJogo.this).load(uri).into(gameImage);
+                Glide.with(EditarJogo.this).load(uri).into(gameImage);
             }
         });
 
@@ -74,9 +74,5 @@ public class AdicionarJogo extends AppCompatActivity {
                 finish();
             }
         });
-
-
-
     }
-
 }
