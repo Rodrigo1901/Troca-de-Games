@@ -33,15 +33,6 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         mapFragment.getMapAsync(this);
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
@@ -54,50 +45,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         //Mudar tipo de exibição do mapa
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
-        final LatLng casaRodrigo = new LatLng(-22.928239, -47.095333);
-
-        /* Adicionando formas (Círculo e Poligono) ao redor de um ponto:
-
-        CircleOptions circleOptions = new CircleOptions();
-        circleOptions.center(casaRodrigo);
-        circleOptions.radius(500);//em metros
-        circleOptions.strokeWidth(10);
-        circleOptions.strokeColor(Color.GREEN);
-        circleOptions.fillColor(Color.argb(64,255,153,0));
-        mMap.addCircle(circleOptions);
-
-        PolygonOptions polygonOptions = new PolygonOptions();
-        polygonOptions.add(new LatLng(-22.925894, -47.095611));
-        polygonOptions.add(new LatLng(-22.928071, -47.096670));
-        polygonOptions.add(new LatLng(-22.929019, -47.094492));
-        polygonOptions.add(new LatLng(-22.927695, -47.093484));
-        polygonOptions.strokeWidth(10);
-        polygonOptions.strokeColor(Color.GREEN);
-        polygonOptions.fillColor(Color.argb(64,255,153,0));
-        mMap.addPolygon(polygonOptions);
-         */
-
-        /* Adicionando evento de clique no mapa:
-
-        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng latLng) {
-
-                Double latitude = latLng.latitude;
-                Double longitude = latLng.longitude;
-
-                Toast.makeText(Mapa.this, "Lat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_SHORT).show();
-
-                PolylineOptions polylineOptions = new PolylineOptions();
-                polylineOptions.add(casaRodrigo);
-                polylineOptions.add(latLng);
-                polylineOptions.color(Color.BLUE);
-                polylineOptions.width(20);
-
-                mMap.addPolyline(polylineOptions);
-            }
-        });
-         */
+        LatLng casaRodrigo = new LatLng(-22.928239, -47.095333);
 
         //Adicionando marcador no mapa
         mMap.addMarker(
