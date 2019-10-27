@@ -12,32 +12,28 @@ import java.util.List;
 
 public class Permission {
 
-    public static boolean validarPermissoes(String[] permissions, Activity activity, int requestCode){
+    public static boolean validarPermissoes(String[] permissions, Activity activity, int requestCode) {
 
-        if(Build.VERSION.SDK_INT >= 23){
+        if (Build.VERSION.SDK_INT >= 23) {
 
             List<String> permissionList = new ArrayList<>();
 
-            for(String permission: permissions){
+            for (String permission : permissions) {
                 Boolean hasPermission = ContextCompat.checkSelfPermission(activity, permission) == PackageManager.PERMISSION_GRANTED;
-                if(!hasPermission){
+                if (!hasPermission) {
                     permissionList.add(permission);
                 }
 
             }
 
-            if(permissionList.isEmpty()){
+            if (permissionList.isEmpty()) {
                 return true;
             }
             String[] newPermissions = new String[permissionList.size()];
             permissionList.toArray(newPermissions);
 
-            ActivityCompat.requestPermissions(activity, newPermissions,requestCode);
-
+            ActivityCompat.requestPermissions(activity, newPermissions, requestCode);
         }
-
         return true;
-
     }
-
 }
