@@ -11,16 +11,28 @@ public class Game {
     public Game() {
     }
 
-    public void salvar(String nomeJogo){
+    public void salvar(){
 
         String userID = FirebaseUser.getIdentificadorUsuario();
         DatabaseReference firebaseRef = ConfigFirebase.getFirebaseDatabase();
-        DatabaseReference game = firebaseRef.child("gameOwners").child(nomeJogo).child(userID);
+        DatabaseReference game = firebaseRef.child("gameOwners").child(getNome()).child(userID);
         DatabaseReference gamelib = firebaseRef.child("library").child(userID).child(getNome());
 
 
         game.setValue(this);
         gamelib.setValue(this);
+
+    }
+
+    public void remover(){
+
+        String userID = FirebaseUser.getIdentificadorUsuario();
+        DatabaseReference firebaseRef = ConfigFirebase.getFirebaseDatabase();
+        DatabaseReference game = firebaseRef.child("gameOwners").child(getNome()).child(userID);
+        DatabaseReference gamelib = firebaseRef.child("library").child(userID).child(getNome());
+
+        game.removeValue();
+        gamelib.removeValue();
 
     }
 

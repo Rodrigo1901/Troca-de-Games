@@ -7,9 +7,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.res.trocadejogos.R;
 
 public class Conversas extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,4 +38,5 @@ public class Conversas extends AppCompatActivity {
 
         return super.onCreateOptionsMenu(menu);
     }
+
 }

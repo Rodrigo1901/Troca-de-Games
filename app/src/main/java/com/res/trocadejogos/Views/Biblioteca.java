@@ -168,9 +168,11 @@ public class Biblioteca extends AppCompatActivity {
                 case R.id.menu_map:
                     Intent it1 = new Intent(Biblioteca.this, Mapa.class);
                     startActivity(it1);
+                    break;
                 case R.id.menu_chat:
                     Intent it2 = new Intent(Biblioteca.this, Conversas.class);
                     startActivity(it2);
+                    break;
             }
             return true;
         }

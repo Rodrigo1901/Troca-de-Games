@@ -38,7 +38,8 @@
         <activity
             android:name=".Views.Mapa"
             android:label="@string/title_activity_mapa"></activity>
-        <activity android:name=".Views.EditarJogo" />
+        <activity android:name=".Views.EditarJogo"
+                  android:parentActivityName=".Views.Biblioteca"/>
         <activity android:name=".Views.Conversas" />
         <activity
             android:name=".Views.RedefinirSenha"
