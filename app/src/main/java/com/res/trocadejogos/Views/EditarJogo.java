@@ -37,7 +37,6 @@ public class EditarJogo extends AppCompatActivity {
     private Switch troca;
     private Switch venda;
     private Button confirmar;
-    private Button remover;
     private Game jogo;
 
     @Override
@@ -56,10 +55,9 @@ public class EditarJogo extends AppCompatActivity {
 
         gameImage = findViewById(R.id.gameImage);
         gameName = findViewById(R.id.gameName);
-        troca = findViewById(R.id.switchVenda);
-        venda = findViewById(R.id.switchTroca);
+        venda = findViewById(R.id.switchVenda);
+        troca = findViewById(R.id.switchTroca);
         confirmar = findViewById(R.id.confirmAdd);
-        remover = findViewById(R.id.deleteButton);
 
         dataRef.child("library").child(identificadorUsuario).child(Biblioteca.selectedGame).addValueEventListener(new ValueEventListener() {
             @Override
@@ -108,15 +106,5 @@ public class EditarJogo extends AppCompatActivity {
             }
         });
 
-        remover.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                jogo = new Game();
-                jogo.setNome(Biblioteca.selectedGame);
-                jogo.remover();
-                Intent it = new Intent(EditarJogo.this, Biblioteca.class);
-                startActivity(it);
-            }
-        });
     }
 }

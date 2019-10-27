@@ -18,7 +18,6 @@ public class Game {
         DatabaseReference game = firebaseRef.child("gameOwners").child(getNome()).child(userID);
         DatabaseReference gamelib = firebaseRef.child("library").child(userID).child(getNome());
 
-
         game.setValue(this);
         gamelib.setValue(this);
 
@@ -37,7 +36,7 @@ public class Game {
     }
 
 
-    public Game(String proprietarios, String venda, String troca, String nome) {
+    public Game(String venda, String troca, String nome) {
         this.venda = venda;
         this.troca = troca;
         this.nome = nome;

@@ -43,8 +43,8 @@ public class AdicionarJogo extends AppCompatActivity {
 
         gameImage = findViewById(R.id.gameImage);
         gameName = findViewById(R.id.gameName);
-        troca = findViewById(R.id.switchVenda);
-        venda = findViewById(R.id.switchTroca);
+        venda = findViewById(R.id.switchVenda);
+        troca = findViewById(R.id.switchTroca);
         confirmar = findViewById(R.id.confirmAdd);
 
 
@@ -72,8 +72,8 @@ public class AdicionarJogo extends AppCompatActivity {
                     jogo.setVenda("1");
                 }
                 jogo.salvar();
-                Intent it = new Intent(AdicionarJogo.this, Biblioteca.class);
-                startActivity(it);
+                finish();
+
             }
         });
 

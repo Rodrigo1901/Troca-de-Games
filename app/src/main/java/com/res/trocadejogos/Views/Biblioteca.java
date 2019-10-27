@@ -1,11 +1,13 @@
 package com.res.trocadejogos.Views;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -43,6 +45,7 @@ public class Biblioteca extends AppCompatActivity {
 
     List<String> listaNome = new ArrayList<>();
     List<Game> games = new ArrayList<>();
+    List<Game> gameList = new ArrayList<>();
     private FirebaseAuth autenticacao;
     private long backPressedTime;
     private Toast backToast;
@@ -54,6 +57,8 @@ public class Biblioteca extends AppCompatActivity {
     public static String selectedGame;
     private RecyclerView listaJogos;
     private StorageReference storageReference;
+    private AdapterBiblioteca adapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,38 +79,61 @@ public class Biblioteca extends AppCompatActivity {
         toolbar.setTitle("Biblioteca");
         setSupportActionBar(toolbar);
 
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        listaJogos.setLayoutManager(layoutManager);
+        listaJogos.setHasFixedSize(true);
+        adapter = new AdapterBiblioteca(Biblioteca.this, gameList);
+        listaJogos.setAdapter(adapter);
+        listaJogos.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), listaJogos, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Game gameClicked = gameList.get(position);
+                selectedGame = gameClicked.getNome();
+                Intent it = new Intent(Biblioteca.this, EditarJogo.class);
+                startActivity(it);
+            }
+
+            @Override
+            public void onLongItemClick(View view,final int position) {
+                Game gameClicked = gameList.get(position);
+                AlertDialog.Builder builder = new AlertDialog.Builder(Biblioteca.this);
+                builder.setTitle("Atenção!");
+                builder.setMessage("Realmente deseja remover o jogo " + gameClicked.getNome() + " da sua biblioteca?" );
+                builder.setPositiveButton("SIM", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Game gameClicked = gameList.get(position);
+                        gameClicked.remover();
+                        adapter.notifyDataSetChanged();
+
+                    }
+                });
+                builder.setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+            }
+
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+            }
+        }));
+
         dataRef.child("library").child(identificadorUsuario).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                final List<Game> gameList = new ArrayList<>();
+                gameList.clear();
                 for(DataSnapshot gameSnapShot:dataSnapshot.getChildren()){
                     gameList.add(gameSnapShot.getValue(Game.class));//lista de jogos que estão na biblioteca do usuario logado
                 }
 
-                AdapterBiblioteca adapter = new AdapterBiblioteca(Biblioteca.this, gameList);
-                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-                listaJogos.setLayoutManager(layoutManager);
-                listaJogos.setHasFixedSize(true);
-                listaJogos.setAdapter(adapter);
-                listaJogos.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), listaJogos, new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position) {
-                        Game gameClicked = gameList.get(position);
-                        selectedGame = gameClicked.getNome();
-                        Intent it = new Intent(Biblioteca.this, EditarJogo.class);
-                        startActivity(it);
-                    }
-
-                    @Override
-                    public void onLongItemClick(View view, int position) {
-
-                    }
-
-                    @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                    }
-                }));
+                adapter.notifyDataSetChanged();
             }
 
             @Override
