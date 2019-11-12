@@ -19,7 +19,7 @@ import com.res.trocadejogos.Config.ConfigFirebase;
 import com.res.trocadejogos.R;
 
 
-
+import java.util.ArrayList;
 import java.util.List;
 
 public class AdapterBiblioteca extends RecyclerView.Adapter<AdapterBiblioteca.MyViewHolder> {
@@ -34,6 +34,7 @@ public class AdapterBiblioteca extends RecyclerView.Adapter<AdapterBiblioteca.My
         this.context = context;
 
     }
+
 
     @NonNull
     @Override

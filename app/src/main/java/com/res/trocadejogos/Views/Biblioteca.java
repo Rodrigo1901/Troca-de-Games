@@ -25,6 +25,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.res.trocadejogos.Adapter.AdapterBiblioteca;
 import com.res.trocadejogos.Adapter.RecyclerItemClickListener;
 import com.res.trocadejogos.Classes.Game;
@@ -56,6 +57,7 @@ public class Biblioteca extends AppCompatActivity {
     private RecyclerView listaJogos;
     private StorageReference storageReference;
     private AdapterBiblioteca adapter;
+    private MaterialSearchView searchView;
 
 
     @Override
@@ -71,11 +73,44 @@ public class Biblioteca extends AppCompatActivity {
         listaJogos = findViewById(R.id.listaGames);
         botaoAdd = findViewById(R.id.addGameButton);
         bottonNav = findViewById(R.id.bottom_navigation);
+        searchView = findViewById(R.id.search_view);
         bottonNav.setOnNavigationItemSelectedListener(navListener);
 
         androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Biblioteca");
         setSupportActionBar(toolbar);
+
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                if( query != null && !query.isEmpty()){
+                    pesquisarJogos(query.toLowerCase());
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if( newText != null && !newText.isEmpty()){
+                    pesquisarJogos(newText.toLowerCase());
+                }
+
+                return true;
+            }
+        });
+
+        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+            @Override
+            public void onSearchViewShown() {
+
+            }
+
+            @Override
+            public void onSearchViewClosed() {
+                reloadGames();
+
+            }
+        });
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         listaJogos.setLayoutManager(layoutManager);
@@ -186,6 +221,25 @@ public class Biblioteca extends AppCompatActivity {
         Collections.sort(listaNome);
     }
 
+    public void pesquisarJogos(String texto){
+        List<Game> searchGamesList = new ArrayList<>();
+        for (Game game :gameList){
+            String nome = game.getNome().toLowerCase();
+            if(nome.contains(texto)){
+                searchGamesList.add(game);
+            }
+        }
+        adapter = new AdapterBiblioteca(Biblioteca.this,searchGamesList);
+        listaJogos.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+    }
+
+    public void reloadGames(){
+        adapter = new AdapterBiblioteca(Biblioteca.this,gameList);
+        listaJogos.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+    }
+
     private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -209,6 +263,9 @@ public class Biblioteca extends AppCompatActivity {
 
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_biblioteca, menu);
+
+        MenuItem item = menu.findItem(R.id.action_pesquisar);
+        searchView.setMenuItem(item);
 
         return super.onCreateOptionsMenu(menu);
     }
