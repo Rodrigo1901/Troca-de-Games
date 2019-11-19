@@ -45,6 +45,7 @@ public class Biblioteca extends AppCompatActivity {
     List<String> listaNome = new ArrayList<>();
     List<Game> games = new ArrayList<>();
     List<Game> gameList = new ArrayList<>();
+    List<Game> gamePosition = new ArrayList<>();
     private FirebaseAuth autenticacao;
     private long backPressedTime;
     private Toast backToast;
@@ -72,9 +73,25 @@ public class Biblioteca extends AppCompatActivity {
 
         listaJogos = findViewById(R.id.listaGames);
         botaoAdd = findViewById(R.id.addGameButton);
-        bottonNav = findViewById(R.id.bottom_navigation);
         searchView = findViewById(R.id.search_view);
-        bottonNav.setOnNavigationItemSelectedListener(navListener);
+        bottonNav = findViewById(R.id.bottom_navigation);
+        bottonNav.setSelectedItemId(R.id.menu_library);
+        bottonNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()){
+                    case R.id.menu_map:
+                        Intent it1 = new Intent(Biblioteca.this, Mapa.class);
+                        startActivity(it1);
+                        break;
+                    case R.id.menu_chat:
+                        Intent it2 = new Intent(Biblioteca.this, Conversas.class);
+                        startActivity(it2);
+                        break;
+                }
+                return true;
+            }
+        });
 
         androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Biblioteca");
@@ -120,7 +137,7 @@ public class Biblioteca extends AppCompatActivity {
         listaJogos.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), listaJogos, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Game gameClicked = gameList.get(position);
+                Game gameClicked = gamePosition.get(position);
                 selectedGame = gameClicked.getNome();
                 Intent it = new Intent(Biblioteca.this, EditarJogo.class);
                 startActivity(it);
@@ -128,14 +145,14 @@ public class Biblioteca extends AppCompatActivity {
 
             @Override
             public void onLongItemClick(View view,final int position) {
-                Game gameClicked = gameList.get(position);
+                Game gameClicked = gamePosition.get(position);
                 AlertDialog.Builder builder = new AlertDialog.Builder(Biblioteca.this);
                 builder.setTitle("Atenção!");
                 builder.setMessage("Realmente deseja remover o jogo " + gameClicked.getNome() + " da sua biblioteca?" );
                 builder.setPositiveButton("SIM", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Game gameClicked = gameList.get(position);
+                        Game gameClicked = gamePosition.get(position);
                         gameClicked.remover();
                         adapter.notifyDataSetChanged();
 
@@ -167,6 +184,7 @@ public class Biblioteca extends AppCompatActivity {
                 }
 
                 adapter.notifyDataSetChanged();
+                gamePosition = gameList;
             }
 
             @Override
@@ -222,7 +240,7 @@ public class Biblioteca extends AppCompatActivity {
     }
 
     public void pesquisarJogos(String texto){
-        List<Game> searchGamesList = new ArrayList<>();
+        final List<Game> searchGamesList = new ArrayList<>();
         for (Game game :gameList){
             String nome = game.getNome().toLowerCase();
             if(nome.contains(texto)){
@@ -231,32 +249,17 @@ public class Biblioteca extends AppCompatActivity {
         }
         adapter = new AdapterBiblioteca(Biblioteca.this,searchGamesList);
         listaJogos.setAdapter(adapter);
+        gamePosition = searchGamesList;
         adapter.notifyDataSetChanged();
+
     }
 
     public void reloadGames(){
         adapter = new AdapterBiblioteca(Biblioteca.this,gameList);
         listaJogos.setAdapter(adapter);
+        gamePosition = gameList;
         adapter.notifyDataSetChanged();
     }
-
-    private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-
-            switch (menuItem.getItemId()){
-                case R.id.menu_map:
-                    Intent it1 = new Intent(Biblioteca.this, Mapa.class);
-                    startActivity(it1);
-                    break;
-                case R.id.menu_chat:
-                    Intent it2 = new Intent(Biblioteca.this, Conversas.class);
-                    startActivity(it2);
-                    break;
-            }
-            return true;
-        }
-    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
