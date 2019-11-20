@@ -33,7 +33,7 @@ public class Mapa extends AppCompatActivity {
 
         fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.add(R.id.mapaContainer, new MapaFragmento(Mapa.this), "MapsFragment");
+        transaction.add(R.id.mapaContainer, new MapaFragmento(Mapa.this), "MapaFragmento");
         transaction.commitAllowingStateLoss();
 
         bottonNav = findViewById(R.id.bottom_navigation);

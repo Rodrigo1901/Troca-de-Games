@@ -34,7 +34,6 @@ import java.util.Locale;
 
 public class MapaFragmento extends SupportMapFragment implements OnMapReadyCallback {
 
-    //nada
     private GoogleMap mMap;
     private Context context;
     private LocationManager locationManager;
@@ -83,7 +82,6 @@ public class MapaFragmento extends SupportMapFragment implements OnMapReadyCallb
                 //Limpando marcadores antes de adicionar
                 mMap.clear();
 
-                /*
                 LatLng localUsuario = new LatLng(latitude, longitude);
 
                 //Adicionando marcador no mapa
@@ -97,68 +95,9 @@ public class MapaFragmento extends SupportMapFragment implements OnMapReadyCallb
                 );
                 //Definindo zoom ao abrir mapa
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(localUsuario, 15));
-                 */
 
-                /*
-                Geocoding -> processo de transformar um endereço ou descrição de um local em latitude/longitude
-                Reverse Geocoding -> processo de transformar latitude/longitude em um endereço
-                */
-                Geocoder geocoder = new Geocoder(context, Locale.getDefault());
 
-                try {
-                    /* Reverse Geocoding */
-                    // List<Address> listaEndereco = geocoder.getFromLocation(latitude, longitude, 1);
 
-                    /* Geocoding */
-                    String stringEndereco = "R. Dr. Silvio Carvalhaes, 150 - Jardim Pauliceia, Campinas - SP";
-                    List<Address> listaEndereco = geocoder.getFromLocationName(stringEndereco, 1);
-
-                    if (listaEndereco != null && listaEndereco.size() > 0) {
-                        Address endereco = listaEndereco.get(0);
-
-                        Log.d("local", "onLocationChanged: " + endereco.toString());
-                        /* RETORNO DO LOG:
-                         *
-                         * onLocationChanged:
-                         * Address[
-                         *   addressLines=[0:"R. Dr. Silvio Carvalhaes, 150 - Jardim Pauliceia, Campinas - SP, 13060, Brazil"],
-                         *   feature=150,
-                         *   admin=São Paulo,
-                         *   sub-admin=Campinas,
-                         *   locality=null,
-                         *   thoroughfare=Rua Doutor Silvio Carvalhaes,
-                         *   postalCode=13060,
-                         *   countryCode=BR,
-                         *   countryName=Brazil,
-                         *   hasLatitude=true,
-                         *   latitude=-22.9282583,
-                         *   hasLongitude=true,
-                         *   longitude=-47.0953078,
-                         *   phone=null,
-                         *   url=null,
-                         *   extras=null]
-                         */
-
-                        Double lat = endereco.getLatitude();
-                        Double lon = endereco.getLongitude();
-
-                        LatLng localUsuario = new LatLng(lat, lon);
-
-                        //Adicionando marcador no mapa
-                        mMap.addMarker(
-                                new MarkerOptions()
-                                        .position(localUsuario)
-                                        .title("Local Usuário")
-                                        .snippet("Casa Rod")
-                                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
-                                //.icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_chat_48px))
-                        );
-                        //Definindo zoom ao abrir mapa
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(localUsuario, 15));
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
             }
 
             @Override
