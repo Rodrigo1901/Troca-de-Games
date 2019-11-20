@@ -20,10 +20,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -43,6 +45,7 @@ public class Mapa extends AppCompatActivity implements OnMapReadyCallback {
     private Toast backToast;
     private BottomNavigationView bottonNav;
     private GoogleMap mMap;
+    private MapView mapView;
     private String[] permissoes = new String[]{
             Manifest.permission.ACCESS_FINE_LOCATION
     };
@@ -62,16 +65,16 @@ public class Mapa extends AppCompatActivity implements OnMapReadyCallback {
         Permission.validarPermissoes(permissoes, this, 1);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+        /*SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        mapFragment.getMapAsync(this);*/
 
         bottonNav = findViewById(R.id.bottom_navigation);
         bottonNav.setSelectedItemId(R.id.menu_map);
         bottonNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch (menuItem.getItemId()){
+                switch (menuItem.getItemId()) {
                     case R.id.menu_library:
                         Intent it1 = new Intent(Mapa.this, Biblioteca.class);
                         startActivity(it1);
@@ -85,6 +88,8 @@ public class Mapa extends AppCompatActivity implements OnMapReadyCallback {
             }
         });
 
+        mapView = findViewById(R.id.mapView);
+        mapView.getMapAsync(this);
     }
 
     @Override
@@ -149,7 +154,6 @@ public class Mapa extends AppCompatActivity implements OnMapReadyCallback {
                 //Limpando marcadores antes de adicionar
                 mMap.clear();
 
-                /*
                 LatLng localUsuario = new LatLng(latitude, longitude);
 
                 //Adicionando marcador no mapa
@@ -163,68 +167,6 @@ public class Mapa extends AppCompatActivity implements OnMapReadyCallback {
                 );
                 //Definindo zoom ao abrir mapa
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(localUsuario, 15));
-                 */
-
-                /*
-                Geocoding -> processo de transformar um endereço ou descrição de um local em latitude/longitude
-                Reverse Geocoding -> processo de transformar latitude/longitude em um endereço
-                */
-                Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
-
-                try {
-                    /* Reverse Geocoding */
-                    // List<Address> listaEndereco = geocoder.getFromLocation(latitude, longitude, 1);
-
-                    /* Geocoding */
-                    String stringEndereco = "R. Dr. Silvio Carvalhaes, 150 - Jardim Pauliceia, Campinas - SP";
-                    List<Address> listaEndereco = geocoder.getFromLocationName(stringEndereco, 1);
-
-                    if (listaEndereco != null && listaEndereco.size() > 0) {
-                        Address endereco = listaEndereco.get(0);
-
-                        Log.d("local", "onLocationChanged: " + endereco.toString());
-                        /* RETORNO DO LOG:
-                         *
-                         * onLocationChanged:
-                         * Address[
-                         *   addressLines=[0:"R. Dr. Silvio Carvalhaes, 150 - Jardim Pauliceia, Campinas - SP, 13060, Brazil"],
-                         *   feature=150,
-                         *   admin=São Paulo,
-                         *   sub-admin=Campinas,
-                         *   locality=null,
-                         *   thoroughfare=Rua Doutor Silvio Carvalhaes,
-                         *   postalCode=13060,
-                         *   countryCode=BR,
-                         *   countryName=Brazil,
-                         *   hasLatitude=true,
-                         *   latitude=-22.9282583,
-                         *   hasLongitude=true,
-                         *   longitude=-47.0953078,
-                         *   phone=null,
-                         *   url=null,
-                         *   extras=null]
-                         */
-
-                        Double lat = endereco.getLatitude();
-                        Double lon = endereco.getLongitude();
-
-                        LatLng localUsuario = new LatLng(lat, lon);
-
-                        //Adicionando marcador no mapa
-                        mMap.addMarker(
-                                new MarkerOptions()
-                                        .position(localUsuario)
-                                        .title("Local Usuário")
-                                        .snippet("Casa Rod")
-                                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
-                                //.icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_chat_48px))
-                        );
-                        //Definindo zoom ao abrir mapa
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(localUsuario, 15));
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
             }
 
             @Override
