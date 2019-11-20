@@ -35,7 +35,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".Views.MapaTestes"
+            android:name=".Views.MapaFragmento"
             android:label="@string/title_activity_mapa" />
         <activity
             android:name=".Views.EditarJogo"

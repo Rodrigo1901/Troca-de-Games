@@ -6,6 +6,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
@@ -31,27 +32,28 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-public class MapaTestes extends FragmentActivity implements OnMapReadyCallback {
+public class MapaFragmento extends SupportMapFragment implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private Context context;
+    private LocationManager locationManager;
+    private LocationListener locationListener;
     private String[] permissoes = new String[]{
             Manifest.permission.ACCESS_FINE_LOCATION
     };
-    private LocationManager locationManager;
-    private LocationListener locationListener;
+
+
+    public MapaFragmento(Context context) {
+        this.context = context;
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mapa_testes);
 
         //Validar Permissões
-        Permission.validarPermissoes(permissoes, this, 1);
-
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        Permission.validarPermissoes(permissoes, (Activity) context, 1);
+        getMapAsync(this);
     }
 
     @Override
@@ -66,7 +68,7 @@ public class MapaTestes extends FragmentActivity implements OnMapReadyCallback {
            Latitude e Longitude - Casa Rodrigo: -22.928239, -47.095333 */
 
         //Objeto responsável por gerenciar a localização do usuário
-        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
 
         locationListener = new LocationListener() {
 
@@ -100,7 +102,7 @@ public class MapaTestes extends FragmentActivity implements OnMapReadyCallback {
                 Geocoding -> processo de transformar um endereço ou descrição de um local em latitude/longitude
                 Reverse Geocoding -> processo de transformar latitude/longitude em um endereço
                 */
-                Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
+                Geocoder geocoder = new Geocoder(context, Locale.getDefault());
 
                 try {
                     /* Reverse Geocoding */
@@ -177,7 +179,7 @@ public class MapaTestes extends FragmentActivity implements OnMapReadyCallback {
          * 3) Distância mínima entre as atualizações de localização (metros)
          * 4) Location listener (para recebermos as atualizações)
          * */
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             locationManager.requestLocationUpdates(
                     LocationManager.GPS_PROVIDER,
                     0,
@@ -206,7 +208,7 @@ public class MapaTestes extends FragmentActivity implements OnMapReadyCallback {
                  * 3) Distância mínima entre as atualizações de localização (metros)
                  * 4) Location listener (para recebermos as atualizações)
                  * */
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     locationManager.requestLocationUpdates(
                             LocationManager.GPS_PROVIDER,
                             0,
@@ -220,18 +222,19 @@ public class MapaTestes extends FragmentActivity implements OnMapReadyCallback {
 
     private void alertaValidarPermissao() {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Permissões Negadas");
         builder.setMessage("Para utilizar o app é necessário aceitar as permissões!");
         builder.setCancelable(false);
         builder.setPositiveButton("CONFIRMAR", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                finish();
+
             }
         });
 
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
 }
