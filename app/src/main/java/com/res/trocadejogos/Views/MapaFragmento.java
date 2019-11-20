@@ -34,6 +34,7 @@ import java.util.Locale;
 
 public class MapaFragmento extends SupportMapFragment implements OnMapReadyCallback {
 
+    //nada
     private GoogleMap mMap;
     private Context context;
     private LocationManager locationManager;
