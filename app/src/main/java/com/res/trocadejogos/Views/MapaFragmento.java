@@ -25,6 +25,12 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
+import com.res.trocadejogos.Config.ConfigFirebase;
+import com.res.trocadejogos.Config.FirebaseUser;
 import com.res.trocadejogos.Config.Permission;
 import com.res.trocadejogos.R;
 
@@ -36,6 +42,9 @@ public class MapaFragmento extends SupportMapFragment implements OnMapReadyCallb
 
     private GoogleMap mMap;
     private Context context;
+    private String identificadorUsuario;
+    private String cepNumber;
+    private DatabaseReference databaseReference;
     private LocationManager locationManager;
     private LocationListener locationListener;
     private String[] permissoes = new String[]{
@@ -50,6 +59,23 @@ public class MapaFragmento extends SupportMapFragment implements OnMapReadyCallb
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        identificadorUsuario = FirebaseUser.getIdentificadorUsuario();
+        databaseReference = ConfigFirebase.getFirebaseDatabase();
+
+        DatabaseReference refCep = databaseReference.child("users").child(identificadorUsuario).child("cep");
+        refCep.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String cep = dataSnapshot.getValue(String.class);
+                cepNumber = cep;
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         //Validar Permissões
         Permission.validarPermissoes(permissoes, (Activity) context, 1);
@@ -74,30 +100,42 @@ public class MapaFragmento extends SupportMapFragment implements OnMapReadyCallb
 
             @Override
             public void onLocationChanged(Location location) {
-                Log.d("localização", "onLocationChanged: " + location.toString());
 
-                Double latitude = location.getLatitude();
-                Double longitude = location.getLongitude();
+                Geocoder geocoder = new Geocoder(context, Locale.getDefault());
 
-                //Limpando marcadores antes de adicionar
-                mMap.clear();
+                try {
+                    /* Reverse Geocoding */
+                    // List<Address> listaEndereco = geocoder.getFromLocation(latitude, longitude, 1);
 
-                LatLng localUsuario = new LatLng(latitude, longitude);
+                    /* Geocoding */
+                    String stringEndereco = cepNumber;
+                    List<Address> listaEndereco = geocoder.getFromLocationName(stringEndereco, 1);
 
-                //Adicionando marcador no mapa
-                mMap.addMarker(
-                        new MarkerOptions()
-                                .position(localUsuario)
-                                .title("Local Usuário")
-                                .snippet("Meu local")
-                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
-                        //.icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_chat_48px))
-                );
-                //Definindo zoom ao abrir mapa
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(localUsuario, 15));
+                    if (listaEndereco != null && listaEndereco.size() > 0) {
+                        Address endereco = listaEndereco.get(0);
 
+                        Log.d("local", "onLocationChanged: " + endereco.toString());
 
+                        Double lat = endereco.getLatitude();
+                        Double lon = endereco.getLongitude();
 
+                        LatLng localUsuario = new LatLng(lat, lon);
+
+                        //Adicionando marcador no mapa
+                        mMap.addMarker(
+                                new MarkerOptions()
+                                        .position(localUsuario)
+                                        .title("Local Usuário")
+                                        .snippet("Casa Rod")
+                                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+                                //.icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_chat_48px))
+                        );
+                        //Definindo zoom ao abrir mapa
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(localUsuario, 15));
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
