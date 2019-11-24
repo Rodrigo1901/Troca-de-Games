@@ -17,6 +17,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -85,87 +86,40 @@ public class MapaFragmento extends SupportMapFragment implements OnMapReadyCallb
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
-        //Variável do mapa
         mMap = googleMap;
-
-        //Mudar tipo de exibição do mapa
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        /* Latitude e Longitude - Casa Samuel: -22.960772, -47.193555
-           Latitude e Longitude - Casa Rodrigo: -22.928239, -47.095333 */
 
-        //Objeto responsável por gerenciar a localização do usuário
-        locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        Geocoder geocoder = new Geocoder(context, Locale.getDefault());
 
-        locationListener = new LocationListener() {
+        try {
+            String stringEndereco = cepNumber;
+            List<Address> listaEndereco = geocoder.getFromLocationName(stringEndereco, 1);
 
-            @Override
-            public void onLocationChanged(Location location) {
+            if (listaEndereco != null && listaEndereco.size() > 0) {
+                Address endereco = listaEndereco.get(0);
 
-                Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+                Log.d("local", "onLocationChanged: " + endereco.toString());
 
-                try {
-                    /* Reverse Geocoding */
-                    // List<Address> listaEndereco = geocoder.getFromLocation(latitude, longitude, 1);
+                Double lat = endereco.getLatitude();
+                Double lon = endereco.getLongitude();
 
-                    /* Geocoding */
-                    String stringEndereco = cepNumber;
-                    List<Address> listaEndereco = geocoder.getFromLocationName(stringEndereco, 1);
+                LatLng localUsuario = new LatLng(lat, lon);
 
-                    if (listaEndereco != null && listaEndereco.size() > 0) {
-                        Address endereco = listaEndereco.get(0);
-
-                        Log.d("local", "onLocationChanged: " + endereco.toString());
-
-                        Double lat = endereco.getLatitude();
-                        Double lon = endereco.getLongitude();
-
-                        LatLng localUsuario = new LatLng(lat, lon);
-
-                        //Adicionando marcador no mapa
-                        mMap.addMarker(
-                                new MarkerOptions()
-                                        .position(localUsuario)
-                                        .title("Local Usuário")
-                                        .snippet("Casa Rod")
-                                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
-                                //.icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_chat_48px))
-                        );
-                        //Definindo zoom ao abrir mapa
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(localUsuario, 15));
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                mMap.addMarker(
+                        new MarkerOptions()
+                                .position(localUsuario)
+                                .title("Local Usuário")
+                                .snippet("Casa Rod")
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+                );
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(localUsuario, 15));
             }
-
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-            }
-        };
-
-        /*
-         * 1) Provedor da localização
-         * 2) Tempo mínimo entre atualizações de localização (milissegundos)
-         * 3) Distância mínima entre as atualizações de localização (metros)
-         * 4) Location listener (para recebermos as atualizações)
-         * */
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            locationManager.requestLocationUpdates(
-                    LocationManager.GPS_PROVIDER,
-                    0,
-                    0,
-                    locationListener
-            );
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
+
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
