@@ -3,22 +3,18 @@ package com.res.trocadejogos.Views;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
-import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -26,24 +22,29 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.res.trocadejogos.Adapter.CustomInfoWindowAdapter;
+import com.res.trocadejogos.Classes.Game;
 import com.res.trocadejogos.Config.ConfigFirebase;
 import com.res.trocadejogos.Config.FirebaseUser;
 import com.res.trocadejogos.Config.Permission;
-import com.res.trocadejogos.R;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 public class MapaFragmento extends SupportMapFragment implements OnMapReadyCallback {
 
+    private List<Game> gameMarker = new ArrayList<>();
     private GoogleMap mMap;
     private Context context;
+    private String selectedGame;
     private String identificadorUsuario;
     private String cepNumber;
     private DatabaseReference databaseReference;
@@ -53,10 +54,11 @@ public class MapaFragmento extends SupportMapFragment implements OnMapReadyCallb
             Manifest.permission.ACCESS_FINE_LOCATION
     };
 
-
-    public MapaFragmento(Context context) {
+    public MapaFragmento(Context context, String selectedGame) {
         this.context = context;
+        this.selectedGame = selectedGame;
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,18 +67,34 @@ public class MapaFragmento extends SupportMapFragment implements OnMapReadyCallb
         identificadorUsuario = FirebaseUser.getIdentificadorUsuario();
         databaseReference = ConfigFirebase.getFirebaseDatabase();
 
-        DatabaseReference refCep = databaseReference.child("users").child(identificadorUsuario).child("cep");
-        refCep.addValueEventListener(new ValueEventListener() {
+        databaseReference.child("gameOwners").child(selectedGame).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String cep = dataSnapshot.getValue(String.class);
-                cepNumber = cep;
+                gameMarker.clear();
+                for(DataSnapshot gameSnapShot:dataSnapshot.getChildren()){
+                    gameMarker.add(gameSnapShot.getValue(Game.class));
+                }
+                pegarDados(gameMarker);
+
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
+        });
+
+        databaseReference.child("users").child(identificadorUsuario).child("cep").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+               cepNumber = dataSnapshot.getValue(String.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+
         });
 
         //Validar Permissões
@@ -89,46 +107,104 @@ public class MapaFragmento extends SupportMapFragment implements OnMapReadyCallb
 
         mMap = googleMap;
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        //mMap.setInfoWindowAdapter();
+        mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(context));
 
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-
-                Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+        Geocoder geocoder = new Geocoder(context, Locale.getDefault());
 
                 try {
-                    String stringEndereco = cepNumber;
-                    List<Address> listaEndereco = geocoder.getFromLocationName(stringEndereco, 1);
 
-                    if (listaEndereco != null && listaEndereco.size() > 0) {
+                    List<Address> listaEndereco = geocoder.getFromLocationName(cepNumber, 1);
+
+                    while (listaEndereco.size()==0) {
+                        listaEndereco = geocoder.getFromLocationName(cepNumber, 1);
+                    }
                         Address endereco = listaEndereco.get(0);
-
-                        Log.d("local", "onLocationChanged: " + endereco.toString());
 
                         Double lat = endereco.getLatitude();
                         Double lon = endereco.getLongitude();
 
                         LatLng localUsuario = new LatLng(lat, lon);
 
-                        mMap.addMarker(
-                                new MarkerOptions()
-                                        .position(localUsuario)
-                                        .title("Local Usuário")
-                                        .snippet("Casa Rod")
-                                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
-                        );
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(localUsuario, 15));
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(localUsuario, 10));
 
-                    }
+                        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                            @Override
+                            public void onInfoWindowClick(Marker marker) {
+                                Intent it = new Intent(context, Conversas.class);
+                                startActivity(it);
+                            }
+                        });
+
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+    }
 
+    private void pegarDados(List<Game> gameMarker){
+
+        for(final Game game:gameMarker){
+
+            databaseReference.child("users").child(game.getIdOwner()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                     String nome = dataSnapshot.child("nome").getValue(String.class);
+                     String cep = dataSnapshot.child("cep").getValue(String.class);
+
+                     mark(nome,cep,game.getVenda(),game.getTroca());
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+    }
+
+    private void mark(String nome, String cep, String vender, String trocar)  {
+
+        String venda;
+        String troca;
+
+        if(vender.equals("1")){
+            venda = "SIM";
+        }else {
+            venda = "NÃO";
+        }
+
+        if(trocar.equals("1")){
+            troca = "SIM";
+        }else {
+            troca = "NÃO";
+        }
+
+        Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+
+        try {
+
+            List<Address> listaEndereco = geocoder.getFromLocationName(cep, 1);
+            while (listaEndereco.size()==0) {
+                listaEndereco = geocoder.getFromLocationName(cep, 1);
             }
-        }, 3000);
+                Address endereco = listaEndereco.get(0);
 
+                Double lat = endereco.getLatitude();
+                Double lon = endereco.getLongitude();
+
+                LatLng local = new LatLng(lat, lon);
+
+                mMap.addMarker(
+                        new MarkerOptions()
+                                .position(local)
+                                .title(nome)
+                                .snippet("Venda: " + venda + " Troca: " + troca)
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+                );
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

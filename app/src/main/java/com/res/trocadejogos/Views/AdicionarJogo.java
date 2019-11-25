@@ -17,11 +17,13 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.StorageReference;
 import com.res.trocadejogos.Classes.Game;
 import com.res.trocadejogos.Config.ConfigFirebase;
+import com.res.trocadejogos.Config.FirebaseUser;
 import com.res.trocadejogos.R;
 
 public class AdicionarJogo extends AppCompatActivity {
 
     private StorageReference storageReference;
+    private String identificadorUsuario;
     private ImageView gameImage;
     private TextView gameName;
     private Switch troca;
@@ -40,6 +42,7 @@ public class AdicionarJogo extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         storageReference = ConfigFirebase.getFirebaseStorage();
+        identificadorUsuario = FirebaseUser.getIdentificadorUsuario();
 
         gameImage = findViewById(R.id.gameImage);
         gameName = findViewById(R.id.gameName);
@@ -61,6 +64,7 @@ public class AdicionarJogo extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 jogo = new Game();
+                jogo.setIdOwner(identificadorUsuario);
                 jogo.setNome(Biblioteca.selectedGame);
                 jogo.setTroca("0");
                 jogo.setVenda("0");

@@ -10,17 +10,27 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.res.trocadejogos.R;
+
+import java.util.ArrayList;
+
+import in.galaxyofandroid.spinerdialog.OnSpinerItemClick;
+import in.galaxyofandroid.spinerdialog.SpinnerDialog;
 
 public class Mapa extends AppCompatActivity {
 
     private long backPressedTime;
     private Toast backToast;
+    private SpinnerDialog spinner;
     private BottomNavigationView bottonNav;
     private FragmentManager fragmentManager;
+    private String selectedGameMap;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,10 +41,7 @@ public class Mapa extends AppCompatActivity {
         toolbar.setTitle("Mapa");
         setSupportActionBar(toolbar);
 
-        fragmentManager = getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.add(R.id.mapaContainer, new MapaFragmento(Mapa.this), "MapaFragmento");
-        transaction.commitAllowingStateLoss();
+        spinner = new SpinnerDialog(Mapa.this, (ArrayList<String>) Biblioteca.listaNome,"Selecione um jogo","Fechar");
 
         bottonNav = findViewById(R.id.bottom_navigation);
         bottonNav.setSelectedItemId(R.id.menu_map);
@@ -87,7 +94,23 @@ public class Mapa extends AppCompatActivity {
         switch (item.getItemId()) {
 
             case R.id.action_pesquisar:
-                finish();
+
+                spinner.showSpinerDialog();
+
+
+                spinner.bindOnSpinerListener(new OnSpinerItemClick() {
+                    @Override
+                    public void onClick(String item, int position) {
+
+                        selectedGameMap = item;
+                        fragmentManager = getSupportFragmentManager();
+                        FragmentTransaction transaction = fragmentManager.beginTransaction();
+                        transaction.add(R.id.mapaContainer, new MapaFragmento(Mapa.this, selectedGameMap), "MapaFragmento");
+                        transaction.commitAllowingStateLoss();
+
+                    }
+                });
+
                 break;
         }
         return super.onOptionsItemSelected(item);

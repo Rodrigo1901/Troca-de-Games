@@ -42,8 +42,7 @@ import in.galaxyofandroid.spinerdialog.SpinnerDialog;
 
 public class Biblioteca extends AppCompatActivity {
 
-    List<String> listaNome = new ArrayList<>();
-    List<Game> games = new ArrayList<>();
+    public static List<String> listaNome = new ArrayList<>();
     List<Game> gameList = new ArrayList<>();
     List<Game> gamePosition = new ArrayList<>();
     private FirebaseAuth autenticacao;
@@ -231,8 +230,7 @@ public class Biblioteca extends AppCompatActivity {
     }
 
     public void List(List<Game> gameList){
-
-        games = gameList;
+        listaNome.clear();
         for(Game game:gameList){
             listaNome.add(game.getNome());
         }

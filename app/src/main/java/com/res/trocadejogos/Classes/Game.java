@@ -6,12 +6,13 @@ import com.res.trocadejogos.Config.FirebaseUser;
 
 public class Game {
 
-    private String venda, troca, nome;
+    private String venda, troca, nome, idOwner;
 
     public Game() {
     }
 
     public void salvar(){
+
 
         String userID = FirebaseUser.getIdentificadorUsuario();
         DatabaseReference firebaseRef = ConfigFirebase.getFirebaseDatabase();
@@ -36,10 +37,19 @@ public class Game {
     }
 
 
-    public Game(String venda, String troca, String nome) {
+    public Game(String venda, String troca, String nome, String idOwner) {
         this.venda = venda;
         this.troca = troca;
         this.nome = nome;
+        this.idOwner = idOwner;
+    }
+
+    public String getIdOwner() {
+        return idOwner;
+    }
+
+    public void setIdOwner(String idOwner) {
+        this.idOwner = idOwner;
     }
 
     public String getNome() {
