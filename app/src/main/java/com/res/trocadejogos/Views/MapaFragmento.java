@@ -16,6 +16,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -88,38 +89,47 @@ public class MapaFragmento extends SupportMapFragment implements OnMapReadyCallb
 
         mMap = googleMap;
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        //mMap.setInfoWindowAdapter();
 
-        Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
 
-        try {
-            String stringEndereco = cepNumber;
-            List<Address> listaEndereco = geocoder.getFromLocationName(stringEndereco, 1);
+                Geocoder geocoder = new Geocoder(context, Locale.getDefault());
 
-            if (listaEndereco != null && listaEndereco.size() > 0) {
-                Address endereco = listaEndereco.get(0);
+                try {
+                    String stringEndereco = cepNumber;
+                    List<Address> listaEndereco = geocoder.getFromLocationName(stringEndereco, 1);
 
-                Log.d("local", "onLocationChanged: " + endereco.toString());
+                    if (listaEndereco != null && listaEndereco.size() > 0) {
+                        Address endereco = listaEndereco.get(0);
 
-                Double lat = endereco.getLatitude();
-                Double lon = endereco.getLongitude();
+                        Log.d("local", "onLocationChanged: " + endereco.toString());
 
-                LatLng localUsuario = new LatLng(lat, lon);
+                        Double lat = endereco.getLatitude();
+                        Double lon = endereco.getLongitude();
 
-                mMap.addMarker(
-                        new MarkerOptions()
-                                .position(localUsuario)
-                                .title("Local Usuário")
-                                .snippet("Casa Rod")
-                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
-                );
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(localUsuario, 15));
+                        LatLng localUsuario = new LatLng(lat, lon);
+
+                        mMap.addMarker(
+                                new MarkerOptions()
+                                        .position(localUsuario)
+                                        .title("Local Usuário")
+                                        .snippet("Casa Rod")
+                                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+                        );
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(localUsuario, 15));
+
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        }, 3000);
+
     }
-
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
