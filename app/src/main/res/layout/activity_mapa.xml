@@ -6,6 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".Views.Mapa">
 
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Pesquise o jogo desejado"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toBottomOf="@+id/mapaContainer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/mapaContainer" />
+
     <FrameLayout
         android:id="@+id/mapaContainer"
         android:layout_width="match_parent"

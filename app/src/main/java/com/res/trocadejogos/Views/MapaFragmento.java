@@ -12,9 +12,13 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -31,7 +35,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.res.trocadejogos.Adapter.CustomInfoWindowAdapter;
 import com.res.trocadejogos.Classes.Game;
 import com.res.trocadejogos.Config.ConfigFirebase;
-import com.res.trocadejogos.Config.FirebaseUser;
 import com.res.trocadejogos.Config.Permission;
 
 import java.io.IOException;
@@ -45,11 +48,7 @@ public class MapaFragmento extends SupportMapFragment implements OnMapReadyCallb
     private GoogleMap mMap;
     private Context context;
     private String selectedGame;
-    private String identificadorUsuario;
-    private String cepNumber;
     private DatabaseReference databaseReference;
-    private LocationManager locationManager;
-    private LocationListener locationListener;
     private String[] permissoes = new String[]{
             Manifest.permission.ACCESS_FINE_LOCATION
     };
@@ -64,8 +63,55 @@ public class MapaFragmento extends SupportMapFragment implements OnMapReadyCallb
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        identificadorUsuario = FirebaseUser.getIdentificadorUsuario();
+        //Validar Permissões
+        Permission.validarPermissoes(permissoes, (Activity) context, 1);
+        getMapAsync(this);
+
+        //identificadorUsuario = FirebaseUser.getIdentificadorUsuario();
         databaseReference = ConfigFirebase.getFirebaseDatabase();
+
+
+        /*
+
+        databaseReference.child("users").child(identificadorUsuario).child("cep").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                cepNumber = dataSnapshot.getValue(String.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+
+        });
+
+         */
+
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
+        mMap = googleMap;
+        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(context));
+        mMap.setMyLocationEnabled(true);
+
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+
+                String tag = marker.getTag().toString();
+                String nome = marker.getTitle();
+                Intent it = new Intent(context, Conversas.class);
+                it.putExtra("id", tag);
+                it.putExtra("nome", nome);
+                startActivity(it);
+
+            }
+        });
+
 
         databaseReference.child("gameOwners").child(selectedGame).addValueEventListener(new ValueEventListener() {
             @Override
@@ -83,128 +129,106 @@ public class MapaFragmento extends SupportMapFragment implements OnMapReadyCallb
 
             }
         });
-
-        databaseReference.child("users").child(identificadorUsuario).child("cep").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-               cepNumber = dataSnapshot.getValue(String.class);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-
-        });
-
-        //Validar Permissões
-        Permission.validarPermissoes(permissoes, (Activity) context, 1);
-        getMapAsync(this);
     }
 
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
+    private void pegarDados(final List<Game> gameMarker){
 
-        mMap = googleMap;
-        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(context));
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
 
-        Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+        for(final Game game:gameMarker){
+
+                    databaseReference.child("users").child(game.getIdOwner()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            String nome = dataSnapshot.child("nome").getValue(String.class);
+                            String cep = dataSnapshot.child("cep").getValue(String.class);
+
+                            getLatLon(nome,cep,game.getVenda(),game.getTroca(),game.getIdOwner());
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+                }
+            }
+        }).start();
+        }
+
+
+    private void getLatLon(final String nome, final String cep, final String vender, final String trocar, final String id) {
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                String venda;
+                String troca;
+
+                if(vender.equals("1")){
+                    venda = "SIM";
+                }else {
+                    venda = "NÃO";
+                }
+
+                if(trocar.equals("1")){
+                    troca = "SIM";
+                }else {
+                    troca = "NÃO";
+                }
+
 
                 try {
 
-                    List<Address> listaEndereco = geocoder.getFromLocationName(cepNumber, 1);
+                    Geocoder geocoder = new Geocoder(context, Locale.getDefault());
 
+                    List<Address> listaEndereco = geocoder.getFromLocationName(cep, 1);
                     while (listaEndereco.size()==0) {
-                        listaEndereco = geocoder.getFromLocationName(cepNumber, 1);
+                        listaEndereco = geocoder.getFromLocationName(cep, 1);
                     }
-                        Address endereco = listaEndereco.get(0);
 
-                        Double lat = endereco.getLatitude();
-                        Double lon = endereco.getLongitude();
+                    Address endereco = listaEndereco.get(0);
 
-                        LatLng localUsuario = new LatLng(lat, lon);
+                    Double lat = endereco.getLatitude();
+                    Double lon = endereco.getLongitude();
 
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(localUsuario, 10));
+                    LatLng local = new LatLng(lat, lon);
 
-                        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-                            @Override
-                            public void onInfoWindowClick(Marker marker) {
-                                Intent it = new Intent(context, Conversas.class);
-                                startActivity(it);
-                            }
-                        });
+                    mark(local, venda, troca, nome, id);
 
 
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-    }
 
-    private void pegarDados(List<Game> gameMarker){
-
-        for(final Game game:gameMarker){
-
-            databaseReference.child("users").child(game.getIdOwner()).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                     String nome = dataSnapshot.child("nome").getValue(String.class);
-                     String cep = dataSnapshot.child("cep").getValue(String.class);
-
-                     mark(nome,cep,game.getVenda(),game.getTroca());
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-        }
-    }
-
-    private void mark(String nome, String cep, String vender, String trocar)  {
-
-        String venda;
-        String troca;
-
-        if(vender.equals("1")){
-            venda = "SIM";
-        }else {
-            venda = "NÃO";
-        }
-
-        if(trocar.equals("1")){
-            troca = "SIM";
-        }else {
-            troca = "NÃO";
-        }
-
-        Geocoder geocoder = new Geocoder(context, Locale.getDefault());
-
-        try {
-
-            List<Address> listaEndereco = geocoder.getFromLocationName(cep, 1);
-            while (listaEndereco.size()==0) {
-                listaEndereco = geocoder.getFromLocationName(cep, 1);
             }
-                Address endereco = listaEndereco.get(0);
+        }).start();
+    }
 
-                Double lat = endereco.getLatitude();
-                Double lon = endereco.getLongitude();
+    private void mark(final LatLng lalo, final String ven, final String tro, final String nome, final String id){
 
-                LatLng local = new LatLng(lat, lon);
+        Handler mainHandler = new Handler(context.getMainLooper());
+        Runnable myRunnable = new Runnable() {
+            @Override
+            public void run(){
 
-                mMap.addMarker(
-                        new MarkerOptions()
-                                .position(local)
-                                .title(nome)
-                                .snippet("Venda: " + venda + " Troca: " + troca)
-                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+                Marker mark = mMap.addMarker(
+                                new MarkerOptions()
+                                    .position(lalo)
+                                    .title(nome)
+                                    .snippet("Venda: " + ven + " Troca: " + tro)
+                                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
                 );
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+                mark.setTag(id);
+            }
+        };
+        mainHandler.post(myRunnable);
+
     }
 
     @Override
@@ -225,7 +249,7 @@ public class MapaFragmento extends SupportMapFragment implements OnMapReadyCallb
                  * 2) Tempo mínimo entre atualizações de localização (milissegundos)
                  * 3) Distância mínima entre as atualizações de localização (metros)
                  * 4) Location listener (para recebermos as atualizações)
-                 * */
+                 *
                 if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     locationManager.requestLocationUpdates(
                             LocationManager.GPS_PROVIDER,
@@ -233,7 +257,7 @@ public class MapaFragmento extends SupportMapFragment implements OnMapReadyCallb
                             0,
                             locationListener
                     );
-                }
+                }*/
             }
         }
     }

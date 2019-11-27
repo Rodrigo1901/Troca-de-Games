@@ -76,25 +76,12 @@ public class Perfil extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil);
 
+        Permission.validarPermissoes(necessaryPermissions, this, 1);
+
         autenticacao = ConfigFirebase.getFirebaseAutenticacao();
         databaseReference = ConfigFirebase.getFirebaseDatabase();
         storageReference = ConfigFirebase.getFirebaseStorage();
         identificadorUsuario = FirebaseUser.getIdentificadorUsuario();
-
-
-        storageReference.child("imagens").child("perfil").child(identificadorUsuario + ".jpeg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Glide.with(Perfil.this).load(uri).into(circleImageViewPerfil);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                circleImageViewPerfil.setImageResource(R.drawable.blank_profile_picture);
-            }
-        });
-
-        Permission.validarPermissoes(necessaryPermissions, this, 1);
 
         camButton = findViewById(R.id.camButton);
         galleryButton = findViewById(R.id.galleryButton);
@@ -109,6 +96,18 @@ public class Perfil extends AppCompatActivity {
         toolbar.setTitle("Perfil");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        storageReference.child("imagens").child("perfil").child(identificadorUsuario + ".jpeg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Glide.with(Perfil.this).load(uri).into(circleImageViewPerfil);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                circleImageViewPerfil.setImageResource(R.drawable.blank_profile_picture);
+            }
+        });
 
         SimpleMaskFormatter smf = new SimpleMaskFormatter("NNNNN-NNN");
         MaskTextWatcher mtw = new MaskTextWatcher(cepField, smf);

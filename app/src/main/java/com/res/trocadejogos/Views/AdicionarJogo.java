@@ -50,22 +50,25 @@ public class AdicionarJogo extends AppCompatActivity {
         troca = findViewById(R.id.switchTroca);
         confirmar = findViewById(R.id.confirmAdd);
 
+        Intent it = getIntent();
+        final String selectedGame = it.getStringExtra("selectedGame");
 
-        storageReference.child("imagens").child("Games").child(Biblioteca.selectedGame + ".jpeg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+
+        storageReference.child("imagens").child("Games").child(selectedGame+ ".jpeg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
                 Glide.with(AdicionarJogo.this).load(uri).into(gameImage);
             }
         });
 
-        gameName.setText(Biblioteca.selectedGame);
+        gameName.setText(selectedGame);
 
         confirmar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 jogo = new Game();
                 jogo.setIdOwner(identificadorUsuario);
-                jogo.setNome(Biblioteca.selectedGame);
+                jogo.setNome(selectedGame);
                 jogo.setTroca("0");
                 jogo.setVenda("0");
 

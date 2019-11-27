@@ -53,21 +53,26 @@ public class EditarJogo extends AppCompatActivity {
         dataRef = ConfigFirebase.getFirebaseDatabase();
         identificadorUsuario = FirebaseUser.getIdentificadorUsuario();
 
+        Intent it = getIntent();
+        final String selectedGame = it.getStringExtra("selectedGame");
+
         gameImage = findViewById(R.id.gameImage);
         gameName = findViewById(R.id.gameName);
         venda = findViewById(R.id.switchVenda);
         troca = findViewById(R.id.switchTroca);
         confirmar = findViewById(R.id.confirmAdd);
 
-        dataRef.child("library").child(identificadorUsuario).child(Biblioteca.selectedGame).addValueEventListener(new ValueEventListener() {
+        dataRef.child("library").child(identificadorUsuario).child(selectedGame).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Game games = dataSnapshot.getValue(Game.class);
-                if(games.getTroca().equals("1")){
-                    troca.setChecked(true);
-                }
-                if(games.getVenda().equals("1")){
-                    venda.setChecked(true);
+                if(games != null) {
+                    if (games.getTroca().equals("1")) {
+                        troca.setChecked(true);
+                    }
+                    if (games.getVenda().equals("1")) {
+                        venda.setChecked(true);
+                    }
                 }
             }
 
@@ -78,20 +83,21 @@ public class EditarJogo extends AppCompatActivity {
         });
 
 
-        storageReference.child("imagens").child("Games").child(Biblioteca.selectedGame + ".jpeg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+        storageReference.child("imagens").child("Games").child(selectedGame + ".jpeg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
                 Glide.with(EditarJogo.this).load(uri).into(gameImage);
             }
         });
 
-        gameName.setText(Biblioteca.selectedGame);
+        gameName.setText(selectedGame);
 
         confirmar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 jogo = new Game();
-                jogo.setNome(Biblioteca.selectedGame);
+                jogo.setIdOwner(identificadorUsuario);
+                jogo.setNome(selectedGame);
                 jogo.setTroca("0");
                 jogo.setVenda("0");
 

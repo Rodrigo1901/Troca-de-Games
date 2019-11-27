@@ -24,7 +24,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.StorageReference;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.res.trocadejogos.Adapter.AdapterBiblioteca;
 import com.res.trocadejogos.Adapter.RecyclerItemClickListener;
@@ -43,8 +42,8 @@ import in.galaxyofandroid.spinerdialog.SpinnerDialog;
 public class Biblioteca extends AppCompatActivity {
 
     public static List<String> listaNome = new ArrayList<>();
-    List<Game> gameList = new ArrayList<>();
-    List<Game> gamePosition = new ArrayList<>();
+    private List<Game> gameList = new ArrayList<>();
+    private List<Game> gamePosition = new ArrayList<>();
     private FirebaseAuth autenticacao;
     private long backPressedTime;
     private Toast backToast;
@@ -53,9 +52,8 @@ public class Biblioteca extends AppCompatActivity {
     private String identificadorUsuario;
     private DatabaseReference dataRef;
     private FloatingActionButton botaoAdd;
-    public static String selectedGame;
+    private String selectedGame;
     private RecyclerView listaJogos;
-    private StorageReference storageReference;
     private AdapterBiblioteca adapter;
     private MaterialSearchView searchView;
 
@@ -68,7 +66,6 @@ public class Biblioteca extends AppCompatActivity {
         autenticacao = ConfigFirebase.getFirebaseAutenticacao();
         dataRef = ConfigFirebase.getFirebaseDatabase();
         identificadorUsuario = FirebaseUser.getIdentificadorUsuario();
-        storageReference = ConfigFirebase.getFirebaseStorage();
 
         listaJogos = findViewById(R.id.listaGames);
         botaoAdd = findViewById(R.id.addGameButton);
@@ -81,6 +78,7 @@ public class Biblioteca extends AppCompatActivity {
                 switch (menuItem.getItemId()){
                     case R.id.menu_map:
                         Intent it1 = new Intent(Biblioteca.this, Mapa.class);
+                        it1.putStringArrayListExtra("listaNome", (ArrayList<String>) listaNome);
                         startActivity(it1);
                         break;
                     case R.id.menu_chat:
@@ -139,6 +137,7 @@ public class Biblioteca extends AppCompatActivity {
                 Game gameClicked = gamePosition.get(position);
                 selectedGame = gameClicked.getNome();
                 Intent it = new Intent(Biblioteca.this, EditarJogo.class);
+                it.putExtra("selectedGame", selectedGame);
                 startActivity(it);
             }
 
@@ -224,6 +223,7 @@ public class Biblioteca extends AppCompatActivity {
 
                 selectedGame = item;
                 Intent it = new Intent(Biblioteca.this, AdicionarJogo.class);
+                it.putExtra("selectedGame", selectedGame);
                 startActivity(it);
             }
         });
@@ -235,6 +235,7 @@ public class Biblioteca extends AppCompatActivity {
             listaNome.add(game.getNome());
         }
         Collections.sort(listaNome);
+
     }
 
     public void pesquisarJogos(String texto){
