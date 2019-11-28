@@ -22,14 +22,12 @@
                 android:id="@+id/circleImageFotoChat"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_marginRight="14dp"
-                android:src="@drawable/blank_profile_picture"/>
+                android:layout_marginRight="14dp" />
 
             <TextView
                 android:id="@+id/textViewNomeChat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Samuel Santana"
                 android:textColor="@android:color/white"
                 android:textSize="16sp"
                 android:textStyle="bold" />

@@ -104,7 +104,7 @@ public class MapaFragmento extends SupportMapFragment implements OnMapReadyCallb
 
                 String tag = marker.getTag().toString();
                 String nome = marker.getTitle();
-                Intent it = new Intent(context, Conversas.class);
+                Intent it = new Intent(context, Chat.class);
                 it.putExtra("id", tag);
                 it.putExtra("nome", nome);
                 startActivity(it);

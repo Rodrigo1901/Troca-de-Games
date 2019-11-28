@@ -49,6 +49,7 @@ public class Conversas extends AppCompatActivity {
         toolbar.setTitle("Conversas");
         setSupportActionBar(toolbar);
 
+        /*
         Intent it = getIntent();
         id = it.getStringExtra("id");
         nome = it.getStringExtra("nome");
@@ -73,6 +74,8 @@ public class Conversas extends AppCompatActivity {
         });
 
         nomeChat.setText(nome);
+
+         */
 
         bottonNav = findViewById(R.id.bottom_navigation);
         bottonNav.setSelectedItemId(R.id.menu_chat);
