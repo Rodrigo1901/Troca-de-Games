@@ -38,6 +38,11 @@ import java.util.List;
 import in.galaxyofandroid.spinerdialog.OnSpinerItemClick;
 import in.galaxyofandroid.spinerdialog.SpinnerDialog;
 
+/**
+ * @author Rodrigo Oliveira - rodrigoos19@gmail.com
+ * @author Samuel Santana - samuel.santana1997@gmail.com
+ */
+
 public class Biblioteca extends AppCompatActivity {
 
     public static List<String> listaNome = new ArrayList<>();

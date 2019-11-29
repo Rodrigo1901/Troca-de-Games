@@ -19,6 +19,11 @@ import com.res.trocadejogos.R;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+/**
+ * @author Rodrigo Oliveira - rodrigoos19@gmail.com
+ * @author Samuel Santana - samuel.santana1997@gmail.com
+ */
+
 public class Conversas extends AppCompatActivity {
 
     private long backPressedTime;

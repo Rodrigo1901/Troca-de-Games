@@ -2,6 +2,11 @@ package com.res.trocadejogos.Config;
 
 import android.util.Base64;
 
+/**
+ * @author Rodrigo Oliveira - rodrigoos19@gmail.com
+ * @author Samuel Santana - samuel.santana1997@gmail.com
+ */
+
 public class Base64Custom {
 
     public static String codificarBase64(String texto) {

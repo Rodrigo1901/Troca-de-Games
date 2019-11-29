@@ -33,6 +33,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * @author Rodrigo Oliveira - rodrigoos19@gmail.com
+ * @author Samuel Santana - samuel.santana1997@gmail.com
+ */
+
 public class MapaFragmento extends SupportMapFragment implements OnMapReadyCallback {
 
     private List<Game> gameMarker = new ArrayList<>();

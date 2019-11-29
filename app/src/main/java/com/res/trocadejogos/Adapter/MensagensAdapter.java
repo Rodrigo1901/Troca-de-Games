@@ -18,6 +18,11 @@ import com.res.trocadejogos.R;
 
 import java.util.List;
 
+/**
+ * @author Rodrigo Oliveira - rodrigoos19@gmail.com
+ * @author Samuel Santana - samuel.santana1997@gmail.com
+ */
+
 public class MensagensAdapter extends RecyclerView.Adapter<MensagensAdapter.MyViewHolder> {
 
     private List<Mensagem> mensagens;

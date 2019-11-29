@@ -1,5 +1,10 @@
 package com.res.trocadejogos.Classes;
 
+/**
+ * @author Rodrigo Oliveira - rodrigoos19@gmail.com
+ * @author Samuel Santana - samuel.santana1997@gmail.com
+ */
+
 public class Mensagem {
 
     private String idUsuario;

@@ -25,6 +25,11 @@ import com.res.trocadejogos.Config.Base64Custom;
 import com.res.trocadejogos.Config.ConfigFirebase;
 import com.res.trocadejogos.R;
 
+/**
+ * @author Rodrigo Oliveira - rodrigoos19@gmail.com
+ * @author Samuel Santana - samuel.santana1997@gmail.com
+ */
+
 public class CadastroUsuario extends AppCompatActivity {
 
     private EditText fieldNome;

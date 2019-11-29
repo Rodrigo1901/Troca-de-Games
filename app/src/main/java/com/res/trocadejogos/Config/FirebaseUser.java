@@ -2,6 +2,11 @@ package com.res.trocadejogos.Config;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+/**
+ * @author Rodrigo Oliveira - rodrigoos19@gmail.com
+ * @author Samuel Santana - samuel.santana1997@gmail.com
+ */
+
 public class FirebaseUser {
 
     public static String getIdentificadorUsuario() {

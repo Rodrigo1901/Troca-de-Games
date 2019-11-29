@@ -4,6 +4,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.res.trocadejogos.Config.ConfigFirebase;
 import com.res.trocadejogos.Config.FirebaseUser;
 
+/**
+ * @author Rodrigo Oliveira - rodrigoos19@gmail.com
+ * @author Samuel Santana - samuel.santana1997@gmail.com
+ */
+
 public class Game {
 
     private String venda, troca, nome, idOwner;

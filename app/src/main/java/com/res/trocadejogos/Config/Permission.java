@@ -10,6 +10,11 @@ import androidx.core.content.ContextCompat;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Rodrigo Oliveira - rodrigoos19@gmail.com
+ * @author Samuel Santana - samuel.santana1997@gmail.com
+ */
+
 public class Permission {
 
     public static boolean validarPermissoes(String[] permissions, Activity activity, int requestCode) {

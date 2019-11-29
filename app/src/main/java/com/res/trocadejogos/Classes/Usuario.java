@@ -8,6 +8,11 @@ import com.res.trocadejogos.Config.FirebaseUser;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author Rodrigo Oliveira - rodrigoos19@gmail.com
+ * @author Samuel Santana - samuel.santana1997@gmail.com
+ */
+
 public class Usuario {
 
     private String senha;
