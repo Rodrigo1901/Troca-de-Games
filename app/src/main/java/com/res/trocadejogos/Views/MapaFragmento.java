@@ -3,6 +3,7 @@ package com.res.trocadejogos.Views;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.Activity;
@@ -64,6 +65,7 @@ public class MapaFragmento extends SupportMapFragment implements OnMapReadyCallb
         super.onCreate(savedInstanceState);
 
         //Validar Permissões
+
         Permission.validarPermissoes(permissoes, (Activity) context, 1);
         getMapAsync(this);
 
@@ -71,27 +73,11 @@ public class MapaFragmento extends SupportMapFragment implements OnMapReadyCallb
         databaseReference = ConfigFirebase.getFirebaseDatabase();
 
 
-        /*
-
-        databaseReference.child("users").child(identificadorUsuario).child("cep").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                cepNumber = dataSnapshot.getValue(String.class);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-
-        });
-
-         */
-
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
 
         mMap = googleMap;
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
@@ -229,54 +215,6 @@ public class MapaFragmento extends SupportMapFragment implements OnMapReadyCallb
         };
         mainHandler.post(myRunnable);
 
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        for (int permissaoResultado : grantResults) {
-
-            //Permissão negada (denied) X Permissão concedida (granted)
-            if (permissaoResultado == PackageManager.PERMISSION_DENIED) {
-                //Alerta
-                alertaValidarPermissao();
-            } else if (permissaoResultado == PackageManager.PERMISSION_GRANTED) {
-                //Recuperar localização do usuário
-
-                /*
-                 * 1) Provedor da localização
-                 * 2) Tempo mínimo entre atualizações de localização (milissegundos)
-                 * 3) Distância mínima entre as atualizações de localização (metros)
-                 * 4) Location listener (para recebermos as atualizações)
-                 *
-                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    locationManager.requestLocationUpdates(
-                            LocationManager.GPS_PROVIDER,
-                            0,
-                            0,
-                            locationListener
-                    );
-                }*/
-            }
-        }
-    }
-
-    private void alertaValidarPermissao() {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Permissões Negadas");
-        builder.setMessage("Para utilizar o app é necessário aceitar as permissões!");
-        builder.setCancelable(false);
-        builder.setPositiveButton("CONFIRMAR", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-            }
-        });
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
     }
 
 }

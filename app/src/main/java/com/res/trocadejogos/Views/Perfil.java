@@ -301,7 +301,14 @@ public class Perfil extends AppCompatActivity {
         builder.setPositiveButton("CONFIRMAR", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                finish();
+                Permission.validarPermissoes(necessaryPermissions, Perfil.this, 1);
+            }
+        });
+        builder.setNegativeButton("NÃO PERMITIR", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Intent it = new Intent(Perfil.this, Biblioteca.class);
+                startActivity(it);
             }
         });
 

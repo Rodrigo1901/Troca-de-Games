@@ -1,11 +1,16 @@
 package com.res.trocadejogos.Views;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,6 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.res.trocadejogos.Config.ConfigFirebase;
 import com.res.trocadejogos.Config.FirebaseUser;
+import com.res.trocadejogos.Config.Permission;
 import com.res.trocadejogos.R;
 
 import java.util.ArrayList;
@@ -36,6 +42,9 @@ public class Mapa extends AppCompatActivity {
     private BottomNavigationView bottonNav;
     private FragmentManager fragmentManager;
     private String selectedGameMap;
+    private String[] permissoes = new String[]{
+            Manifest.permission.ACCESS_FINE_LOCATION
+    };
 
 
     @Override
@@ -46,6 +55,8 @@ public class Mapa extends AppCompatActivity {
         androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Mapa");
         setSupportActionBar(toolbar);
+
+        Permission.validarPermissoes(permissoes, Mapa.this, 1);
 
         spinner = new SpinnerDialog(Mapa.this, (ArrayList<String>) Biblioteca.listaNome,"Selecione um jogo","Fechar");
 
@@ -121,5 +132,48 @@ public class Mapa extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        for (int permissaoResultado : grantResults) {
+
+            //Permissão negada (denied) X Permissão concedida (granted)
+            if (permissaoResultado == PackageManager.PERMISSION_DENIED) {
+                //Alerta
+                alertaValidarPermissao();
+            } else if (permissaoResultado == PackageManager.PERMISSION_GRANTED) {
+
+
+            }
+        }
+    }
+
+    private void alertaValidarPermissao() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(Mapa.this);
+        builder.setTitle("Permissões Negadas");
+        builder.setMessage("Para utilizar o app é necessário aceitar as permissões!");
+        builder.setCancelable(false);
+        builder.setPositiveButton("CONFIRMAR", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Permission.validarPermissoes(permissoes, Mapa.this, 1);
+            }
+        });
+        builder.setNegativeButton("NÃO PERMITIR", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Intent it = new Intent(Mapa.this, Biblioteca.class);
+                startActivity(it);
+
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
 
 }
