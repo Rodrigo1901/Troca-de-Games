@@ -22,7 +22,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Views.Mapa"></activity>
+        <activity android:name=".Views.Mapa"
+            android:screenOrientation="portrait"></activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -37,33 +38,43 @@
 
         <activity
             android:name=".Views.MapaFragmento"
-            android:label="@string/title_activity_mapa" />
+            android:label="@string/title_activity_mapa"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Views.EditarJogo"
-            android:parentActivityName=".Views.Biblioteca" />
-        <activity android:name=".Views.Conversas" />
+            android:parentActivityName=".Views.Biblioteca"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Views.Conversas"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Views.RedefinirSenha"
-            android:parentActivityName=".Views.MainActivity" />
+            android:parentActivityName=".Views.MainActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Views.AdicionarJogo"
-            android:parentActivityName=".Views.Biblioteca" />
+            android:parentActivityName=".Views.Biblioteca"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Views.Chat"
             android:parentActivityName=".Views.Conversas"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.res.trocadejogos.Views.Biblioteca" />
         </activity>
         <activity
             android:name=".Views.Perfil"
-            android:parentActivityName=".Views.Biblioteca" />
-        <activity android:name=".Views.Biblioteca" />
+            android:parentActivityName=".Views.Biblioteca"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Views.Biblioteca"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Views.CadastroUsuario"
-            android:parentActivityName=".Views.MainActivity" />
-        <activity android:name=".Views.MainActivity">
+            android:parentActivityName=".Views.MainActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Views.MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
