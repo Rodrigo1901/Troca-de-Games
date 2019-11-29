@@ -7,9 +7,6 @@ import android.os.Bundle;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,7 +15,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -31,8 +27,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.storage.StorageReference;
 import com.res.trocadejogos.Adapter.MensagensAdapter;
 import com.res.trocadejogos.Classes.Mensagem;
-import com.res.trocadejogos.Classes.Usuario;
-import com.res.trocadejogos.Config.Base64Custom;
 import com.res.trocadejogos.Config.ConfigFirebase;
 import com.res.trocadejogos.Config.FirebaseUser;
 import com.res.trocadejogos.R;

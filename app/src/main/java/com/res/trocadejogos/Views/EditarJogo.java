@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -21,7 +20,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
-import com.res.trocadejogos.Adapter.AdapterBiblioteca;
 import com.res.trocadejogos.Classes.Game;
 import com.res.trocadejogos.Config.ConfigFirebase;
 import com.res.trocadejogos.Config.FirebaseUser;
@@ -66,7 +64,7 @@ public class EditarJogo extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Game games = dataSnapshot.getValue(Game.class);
-                if(games != null) {
+                if (games != null) {
                     if (games.getTroca().equals("1")) {
                         troca.setChecked(true);
                     }
@@ -81,7 +79,6 @@ public class EditarJogo extends AppCompatActivity {
 
             }
         });
-
 
         storageReference.child("imagens").child("Games").child(selectedGame + ".jpeg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
@@ -101,16 +98,15 @@ public class EditarJogo extends AppCompatActivity {
                 jogo.setTroca("0");
                 jogo.setVenda("0");
 
-                if(troca.isChecked()){
+                if (troca.isChecked()) {
                     jogo.setTroca("1");
                 }
-                if(venda.isChecked()){
+                if (venda.isChecked()) {
                     jogo.setVenda("1");
                 }
                 jogo.salvar();
                 finish();
             }
         });
-
     }
 }

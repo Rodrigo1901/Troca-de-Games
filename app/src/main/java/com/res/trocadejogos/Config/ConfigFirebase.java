@@ -27,12 +27,12 @@ public class ConfigFirebase {
         }
         return database;
     }
-    public static StorageReference getFirebaseStorage(){
+
+    public static StorageReference getFirebaseStorage() {
+
         if (storage == null) {
             storage = FirebaseStorage.getInstance().getReference();
         }
         return storage;
-
     }
-
 }

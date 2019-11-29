@@ -18,8 +18,6 @@ import com.res.trocadejogos.Classes.Game;
 import com.res.trocadejogos.Config.ConfigFirebase;
 import com.res.trocadejogos.R;
 
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class AdapterBiblioteca extends RecyclerView.Adapter<AdapterBiblioteca.MyViewHolder> {
@@ -28,13 +26,10 @@ public class AdapterBiblioteca extends RecyclerView.Adapter<AdapterBiblioteca.My
     private Context context;
     private StorageReference storageReference;
 
-
-    public AdapterBiblioteca(Context context, List<Game> games){
+    public AdapterBiblioteca(Context context, List<Game> games) {
         this.gameList = games;
         this.context = context;
-
     }
-
 
     @NonNull
     @Override
@@ -54,9 +49,6 @@ public class AdapterBiblioteca extends RecyclerView.Adapter<AdapterBiblioteca.My
                 Glide.with(context).load(uri).into(holder.capa);
             }
         });
-
-
-
     }
 
     @Override
@@ -69,17 +61,11 @@ public class AdapterBiblioteca extends RecyclerView.Adapter<AdapterBiblioteca.My
         ImageView capa;
         TextView nome;
 
-
         public MyViewHolder(View itemView) {
             super(itemView);
 
             capa = itemView.findViewById(R.id.gameImageLib);
             nome = itemView.findViewById(R.id.gameNameLib);
-
         }
-
-
-
     }
-
 }

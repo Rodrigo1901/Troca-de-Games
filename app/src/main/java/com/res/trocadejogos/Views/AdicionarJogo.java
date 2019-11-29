@@ -53,8 +53,7 @@ public class AdicionarJogo extends AppCompatActivity {
         Intent it = getIntent();
         final String selectedGame = it.getStringExtra("selectedGame");
 
-
-        storageReference.child("imagens").child("Games").child(selectedGame+ ".jpeg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+        storageReference.child("imagens").child("Games").child(selectedGame + ".jpeg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
                 Glide.with(AdicionarJogo.this).load(uri).into(gameImage);
@@ -72,20 +71,15 @@ public class AdicionarJogo extends AppCompatActivity {
                 jogo.setTroca("0");
                 jogo.setVenda("0");
 
-                if(troca.isChecked()){
+                if (troca.isChecked()) {
                     jogo.setTroca("1");
                 }
-                if(venda.isChecked()){
+                if (venda.isChecked()) {
                     jogo.setVenda("1");
                 }
                 jogo.salvar();
                 finish();
-
             }
         });
-
-
-
     }
-
 }

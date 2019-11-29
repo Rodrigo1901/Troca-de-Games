@@ -16,19 +16,18 @@ public class Usuario {
     private String cep;
     private String email;
 
-
     public Usuario() {
     }
 
-    public void salvar(){
+    public void salvar() {
 
         DatabaseReference firebaseRef = ConfigFirebase.getFirebaseDatabase();
         DatabaseReference usuario = firebaseRef.child("users").child(getId());
 
         usuario.setValue(this);
-
     }
-    public void atualizarCep(){
+
+    public void atualizarCep() {
 
         String userID = FirebaseUser.getIdentificadorUsuario();
         DatabaseReference database = ConfigFirebase.getFirebaseDatabase();
@@ -38,10 +37,9 @@ public class Usuario {
         Map<String, Object> userData = convertToMapCep();
 
         userRef.updateChildren(userData);
-
     }
 
-    public void atualizarNome(){
+    public void atualizarNome() {
 
         String userID = FirebaseUser.getIdentificadorUsuario();
         DatabaseReference database = ConfigFirebase.getFirebaseDatabase();
@@ -51,11 +49,10 @@ public class Usuario {
         Map<String, Object> userData = convertToMapNome();
 
         userRef.updateChildren(userData);
-
     }
 
     @Exclude
-    public Map<String, Object> convertToMapNome(){
+    public Map<String, Object> convertToMapNome() {
         HashMap<String, Object> userMap = new HashMap<>();
         userMap.put("nome", getNome());
 
@@ -63,7 +60,7 @@ public class Usuario {
     }
 
     @Exclude
-    public Map<String, Object> convertToMapCep(){
+    public Map<String, Object> convertToMapCep() {
         HashMap<String, Object> userMap = new HashMap<>();
         userMap.put("cep", getCep());
 
@@ -111,6 +108,4 @@ public class Usuario {
     public void setEmail(String email) {
         this.email = email;
     }
-
-
 }

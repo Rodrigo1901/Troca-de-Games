@@ -23,7 +23,6 @@ public class Permission {
                 if (!hasPermission) {
                     permissionList.add(permission);
                 }
-
             }
 
             if (permissionList.isEmpty()) {

@@ -11,8 +11,7 @@ public class Game {
     public Game() {
     }
 
-    public void salvar(){
-
+    public void salvar() {
 
         String userID = FirebaseUser.getIdentificadorUsuario();
         DatabaseReference firebaseRef = ConfigFirebase.getFirebaseDatabase();
@@ -21,10 +20,9 @@ public class Game {
 
         game.setValue(this);
         gamelib.setValue(this);
-
     }
 
-    public void remover(){
+    public void remover() {
 
         String userID = FirebaseUser.getIdentificadorUsuario();
         DatabaseReference firebaseRef = ConfigFirebase.getFirebaseDatabase();
@@ -33,7 +31,6 @@ public class Game {
 
         game.removeValue();
         gamelib.removeValue();
-
     }
 
 
@@ -75,5 +72,4 @@ public class Game {
     public void setTroca(String troca) {
         this.troca = troca;
     }
-
 }

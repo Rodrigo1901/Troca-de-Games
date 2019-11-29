@@ -33,17 +33,14 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.res.trocadejogos.Classes.Usuario;
-import com.res.trocadejogos.Config.Base64Custom;
 import com.res.trocadejogos.Config.ConfigFirebase;
 import com.res.trocadejogos.Config.FirebaseUser;
 import com.res.trocadejogos.Config.Permission;
 import com.res.trocadejogos.R;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -155,8 +152,6 @@ public class Perfil extends AppCompatActivity {
                 usuarioLogado.setNome(nome);
                 usuarioLogado.atualizarNome();
                 Toast.makeText(Perfil.this, "Nome atualizado", Toast.LENGTH_SHORT).show();
-
-
             }
         });
 
@@ -168,10 +163,8 @@ public class Perfil extends AppCompatActivity {
                 usuarioLogado.setCep(cep);
                 usuarioLogado.atualizarCep();
                 Toast.makeText(Perfil.this, "CEP atualizado", Toast.LENGTH_SHORT).show();
-
             }
         });
-
 
         camButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -217,7 +210,6 @@ public class Perfil extends AppCompatActivity {
 
                             AlertDialog dialog = builder.create();
                             dialog.show();
-
                         }
                     }
                 });
@@ -277,9 +269,7 @@ public class Perfil extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
         }
-
     }
 
     @Override

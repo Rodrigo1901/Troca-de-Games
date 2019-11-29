@@ -7,7 +7,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -15,17 +14,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
-import com.miguelcatalan.materialsearchview.MaterialSearchView;
-import com.res.trocadejogos.Config.ConfigFirebase;
-import com.res.trocadejogos.Config.FirebaseUser;
 import com.res.trocadejogos.Config.Permission;
 import com.res.trocadejogos.R;
 
@@ -46,7 +37,6 @@ public class Mapa extends AppCompatActivity {
             Manifest.permission.ACCESS_FINE_LOCATION
     };
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,14 +48,14 @@ public class Mapa extends AppCompatActivity {
 
         Permission.validarPermissoes(permissoes, Mapa.this, 1);
 
-        spinner = new SpinnerDialog(Mapa.this, (ArrayList<String>) Biblioteca.listaNome,"Selecione um jogo","Fechar");
+        spinner = new SpinnerDialog(Mapa.this, (ArrayList<String>) Biblioteca.listaNome, "Selecione um jogo", "Fechar");
 
         bottonNav = findViewById(R.id.bottom_navigation);
         bottonNav.setSelectedItemId(R.id.menu_map);
         bottonNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch (menuItem.getItemId()){
+                switch (menuItem.getItemId()) {
                     case R.id.menu_library:
                         Intent it1 = new Intent(Mapa.this, Biblioteca.class);
                         startActivity(it1);
@@ -78,7 +68,6 @@ public class Mapa extends AppCompatActivity {
                 return true;
             }
         });
-
     }
 
     @Override
@@ -97,7 +86,6 @@ public class Mapa extends AppCompatActivity {
             backToast.cancel();
             moveTaskToBack(true);
             return;
-
         } else {
             backToast = Toast.makeText(Mapa.this, "Aperte novamente para sair", Toast.LENGTH_SHORT);
             backToast.show();
@@ -114,7 +102,6 @@ public class Mapa extends AppCompatActivity {
 
                 spinner.showSpinerDialog();
 
-
                 spinner.bindOnSpinerListener(new OnSpinerItemClick() {
                     @Override
                     public void onClick(String item, int position) {
@@ -124,10 +111,8 @@ public class Mapa extends AppCompatActivity {
                         FragmentTransaction transaction = fragmentManager.beginTransaction();
                         transaction.add(R.id.mapaContainer, new MapaFragmento(Mapa.this, selectedGameMap), "MapaFragmento");
                         transaction.commitAllowingStateLoss();
-
                     }
                 });
-
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -144,7 +129,6 @@ public class Mapa extends AppCompatActivity {
                 //Alerta
                 alertaValidarPermissao();
             } else if (permissaoResultado == PackageManager.PERMISSION_GRANTED) {
-
 
             }
         }
@@ -167,13 +151,10 @@ public class Mapa extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
                 Intent it = new Intent(Mapa.this, Biblioteca.class);
                 startActivity(it);
-
             }
         });
 
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-
-
 }

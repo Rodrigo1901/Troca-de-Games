@@ -16,7 +16,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
 
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -57,7 +56,6 @@ public class Biblioteca extends AppCompatActivity {
     private AdapterBiblioteca adapter;
     private MaterialSearchView searchView;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,7 +73,7 @@ public class Biblioteca extends AppCompatActivity {
         bottonNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch (menuItem.getItemId()){
+                switch (menuItem.getItemId()) {
                     case R.id.menu_map:
                         Intent it1 = new Intent(Biblioteca.this, Mapa.class);
                         it1.putStringArrayListExtra("listaNome", (ArrayList<String>) listaNome);
@@ -97,7 +95,7 @@ public class Biblioteca extends AppCompatActivity {
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                if( query != null && !query.isEmpty()){
+                if (query != null && !query.isEmpty()) {
                     pesquisarJogos(query.toLowerCase());
                 }
                 return true;
@@ -105,7 +103,7 @@ public class Biblioteca extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if( newText != null && !newText.isEmpty()){
+                if (newText != null && !newText.isEmpty()) {
                     pesquisarJogos(newText.toLowerCase());
                 }
 
@@ -142,11 +140,11 @@ public class Biblioteca extends AppCompatActivity {
             }
 
             @Override
-            public void onLongItemClick(View view,final int position) {
+            public void onLongItemClick(View view, final int position) {
                 Game gameClicked = gamePosition.get(position);
                 AlertDialog.Builder builder = new AlertDialog.Builder(Biblioteca.this);
                 builder.setTitle("Atenção!");
-                builder.setMessage("Realmente deseja remover o jogo " + gameClicked.getNome() + " da sua biblioteca?" );
+                builder.setMessage("Realmente deseja remover o jogo " + gameClicked.getNome() + " da sua biblioteca?");
                 builder.setPositiveButton("SIM", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -164,7 +162,6 @@ public class Biblioteca extends AppCompatActivity {
                 });
                 AlertDialog dialog = builder.create();
                 dialog.show();
-
             }
 
             @Override
@@ -177,7 +174,7 @@ public class Biblioteca extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 gameList.clear();
-                for(DataSnapshot gameSnapShot:dataSnapshot.getChildren()){
+                for (DataSnapshot gameSnapShot : dataSnapshot.getChildren()) {
                     gameList.add(gameSnapShot.getValue(Game.class));//lista de jogos que estão na biblioteca do usuario logado
                 }
 
@@ -195,7 +192,7 @@ public class Biblioteca extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 List<Game> games = new ArrayList<>();
-                for(DataSnapshot gameSnapShot:dataSnapshot.getChildren()){
+                for (DataSnapshot gameSnapShot : dataSnapshot.getChildren()) {
                     games.add(gameSnapShot.getValue(Game.class));//lista de todos os jogos
                     //games = games - gameList
                 }
@@ -208,12 +205,12 @@ public class Biblioteca extends AppCompatActivity {
             }
         });
 
-        spinner = new SpinnerDialog(Biblioteca.this, (ArrayList<String>) listaNome,"Selecione um jogo","Fechar");
+        spinner = new SpinnerDialog(Biblioteca.this, (ArrayList<String>) listaNome, "Selecione um jogo", "Fechar");
 
         botaoAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               spinner.showSpinerDialog();
+                spinner.showSpinerDialog();
             }
         });
 
@@ -229,32 +226,31 @@ public class Biblioteca extends AppCompatActivity {
         });
     }
 
-    public void List(List<Game> gameList){
+    public void List(List<Game> gameList) {
         listaNome.clear();
-        for(Game game:gameList){
+        for (Game game : gameList) {
             listaNome.add(game.getNome());
         }
         Collections.sort(listaNome);
-
     }
 
-    public void pesquisarJogos(String texto){
+    public void pesquisarJogos(String texto) {
         final List<Game> searchGamesList = new ArrayList<>();
-        for (Game game :gameList){
+        for (Game game : gameList) {
             String nome = game.getNome().toLowerCase();
-            if(nome.contains(texto)){
+            if (nome.contains(texto)) {
                 searchGamesList.add(game);
             }
         }
-        adapter = new AdapterBiblioteca(Biblioteca.this,searchGamesList);
+
+        adapter = new AdapterBiblioteca(Biblioteca.this, searchGamesList);
         listaJogos.setAdapter(adapter);
         gamePosition = searchGamesList;
         adapter.notifyDataSetChanged();
-
     }
 
-    public void reloadGames(){
-        adapter = new AdapterBiblioteca(Biblioteca.this,gameList);
+    public void reloadGames() {
+        adapter = new AdapterBiblioteca(Biblioteca.this, gameList);
         listaJogos.setAdapter(adapter);
         gamePosition = gameList;
         adapter.notifyDataSetChanged();
@@ -310,7 +306,6 @@ public class Biblioteca extends AppCompatActivity {
             backToast.cancel();
             moveTaskToBack(true);
             return;
-
         } else {
             backToast = Toast.makeText(Biblioteca.this, "Aperte novamente para sair", Toast.LENGTH_SHORT);
             backToast.show();

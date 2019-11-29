@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,16 +12,9 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
-import com.res.trocadejogos.Config.ConfigFirebase;
 import com.res.trocadejogos.R;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -82,7 +74,7 @@ public class Conversas extends AppCompatActivity {
         bottonNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch (menuItem.getItemId()){
+                switch (menuItem.getItemId()) {
                     case R.id.menu_library:
                         Intent it1 = new Intent(Conversas.this, Biblioteca.class);
                         startActivity(it1);
@@ -120,5 +112,4 @@ public class Conversas extends AppCompatActivity {
         }
         backPressedTime = System.currentTimeMillis();
     }
-
 }
