@@ -280,7 +280,8 @@ public class Biblioteca extends AppCompatActivity {
             case R.id.action_deslogar:
                 deslogarUsuario();
                 verificarLogin(); // Verificar se usuário está logado
-                finish();
+                Intent it = new Intent(Biblioteca.this, MainActivity.class);
+                startActivity(it);
                 break;
             case R.id.action_perfil:
                 editPerfil();
