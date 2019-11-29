@@ -36,6 +36,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.res.trocadejogos.Adapter.CustomInfoWindowAdapter;
 import com.res.trocadejogos.Classes.Game;
 import com.res.trocadejogos.Config.ConfigFirebase;
+import com.res.trocadejogos.Config.FirebaseUser;
 import com.res.trocadejogos.Config.Permission;
 
 import java.io.IOException;
@@ -49,6 +50,7 @@ public class MapaFragmento extends SupportMapFragment implements OnMapReadyCallb
     private GoogleMap mMap;
     private Context context;
     private String selectedGame;
+    private String identificadorUsuario;
     private DatabaseReference databaseReference;
     private String[] permissoes = new String[]{
             Manifest.permission.ACCESS_FINE_LOCATION
@@ -71,6 +73,7 @@ public class MapaFragmento extends SupportMapFragment implements OnMapReadyCallb
 
         //identificadorUsuario = FirebaseUser.getIdentificadorUsuario();
         databaseReference = ConfigFirebase.getFirebaseDatabase();
+        identificadorUsuario = FirebaseUser.getIdentificadorUsuario();
 
 
     }
@@ -202,15 +205,18 @@ public class MapaFragmento extends SupportMapFragment implements OnMapReadyCallb
             @Override
             public void run(){
 
-                Marker mark = mMap.addMarker(
-                                new MarkerOptions()
+                if(!id.equals(identificadorUsuario)) {
+
+                    Marker mark = mMap.addMarker(
+                            new MarkerOptions()
                                     .position(lalo)
                                     .title(nome)
                                     .snippet("Venda: " + ven + " Troca: " + tro)
                                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
-                );
+                    );
 
-                mark.setTag(id);
+                    mark.setTag(id);
+                }
             }
         };
         mainHandler.post(myRunnable);
