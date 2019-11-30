@@ -259,14 +259,13 @@ public class Perfil extends AppCompatActivity {
                         @Override
                         public void onFailure(@NonNull Exception e) {
 
-                            Toast.makeText(Perfil.this, "Falha ao definir imagem", Toast.LENGTH_SHORT).show();
-
+                            Toast.makeText(Perfil.this, "Falha ao definir imagem!", Toast.LENGTH_SHORT).show();
                         }
                     }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(final UploadTask.TaskSnapshot taskSnapshot) {
 
-                            Toast.makeText(Perfil.this, "Sucesso ao definir imagem", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Perfil.this, "Sucesso ao definir imagem!", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
