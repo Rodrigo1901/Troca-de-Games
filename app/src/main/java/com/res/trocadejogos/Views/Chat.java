@@ -291,6 +291,7 @@ public class Chat extends AppCompatActivity {
                 Mensagem mensagem = dataSnapshot.getValue(Mensagem.class);
                 mensagens.add(mensagem);
                 adapter.notifyDataSetChanged();
+                recyclerMensagens.smoothScrollToPosition(adapter.getItemCount());
             }
 
             @Override
