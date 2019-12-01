@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -129,6 +130,24 @@ public class Biblioteca extends AppCompatActivity {
             }
         });
 
+        dataRef.child("library").child(identificadorUsuario).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                gameList.clear();
+                for (DataSnapshot gameSnapShot : dataSnapshot.getChildren()) {
+                    gameList.add(gameSnapShot.getValue(Game.class));//lista de jogos que estão na biblioteca do usuario logado
+                }
+
+                adapter.notifyDataSetChanged();
+                gamePosition = gameList;
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         listaJogos.setLayoutManager(layoutManager);
         listaJogos.setHasFixedSize(true);
@@ -174,24 +193,6 @@ public class Biblioteca extends AppCompatActivity {
 
             }
         }));
-
-        dataRef.child("library").child(identificadorUsuario).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                gameList.clear();
-                for (DataSnapshot gameSnapShot : dataSnapshot.getChildren()) {
-                    gameList.add(gameSnapShot.getValue(Game.class));//lista de jogos que estão na biblioteca do usuario logado
-                }
-
-                adapter.notifyDataSetChanged();
-                gamePosition = gameList;
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
 
         dataRef.child("gameList").addValueEventListener(new ValueEventListener() {
             @Override

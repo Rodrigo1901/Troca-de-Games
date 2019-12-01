@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -27,10 +28,12 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.res.trocadejogos.Adapter.MensagensAdapter;
 import com.res.trocadejogos.Classes.Conversa;
+import com.res.trocadejogos.Classes.Game;
 import com.res.trocadejogos.Classes.Mensagem;
 import com.res.trocadejogos.Config.ConfigFirebase;
 import com.res.trocadejogos.Config.FirebaseUser;
@@ -64,7 +67,6 @@ public class Chat extends AppCompatActivity {
     private RecyclerView recyclerMensagens;
     private TextView textViewNome;
     private CircleImageView circleImageViewFoto;
-    //private Usuario usuarioDestinatario;
     private MensagensAdapter adapter;
     private List<Mensagem> mensagens = new ArrayList<>();
     private static final int SELECAO_CAMERA = 100;
@@ -78,6 +80,7 @@ public class Chat extends AppCompatActivity {
         //Recuperar dados do usuario destinatario
         Intent it = getIntent();
         idUsuarioDestinatario = it.getStringExtra("id");
+        idUsuarioDestinatario = Conversas.chat.getIdDestinatario();
         nomeUsuarioDestinatario = it.getStringExtra("nome");
 
         //Configurando toolbar
@@ -99,17 +102,22 @@ public class Chat extends AppCompatActivity {
         //Recuperar dados do usuario remetente
         idUsuarioRemetente = FirebaseUser.getIdentificadorUsuario();
 
-        /*Recuperar dados do usuario destinatario (Aula 308)
-        Bundle bundle = getIntent().getExtras();
+        database.child("users").child(idUsuarioDestinatario).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String nome = dataSnapshot.child("nome").getValue(String.class);
+                nomeUsuarioDestinatario = nome;
+            }
 
-        if (bundle != null) {
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            usuarioDestinatario = (Usuario) bundle.getSerializable("chatContato");
-            textViewNome.setText(usuarioDestinatario.getNome());
-        }*/
+            }
+        });
 
         //Atualizar nome e foto do usuario destinatario na tela de chat
         textViewNome.setText(nomeUsuarioDestinatario);
+
 
         storage.child("imagens").child("perfil").child(idUsuarioDestinatario + ".jpeg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
@@ -122,6 +130,7 @@ public class Chat extends AppCompatActivity {
                 circleImageViewFoto.setImageResource(R.drawable.blank_profile_picture);
             }
         });
+
 
         //Configuração adapter
         adapter = new MensagensAdapter(mensagens, getApplicationContext());
@@ -144,21 +153,6 @@ public class Chat extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    @Override
-    public void onBackPressed() {
-
-        if (backPressedTime + 2000 > System.currentTimeMillis()) {
-            backToast.cancel();
-            moveTaskToBack(true);
-            return;
-
-        } else {
-            backToast = Toast.makeText(Chat.this, "Aperte novamente para sair", Toast.LENGTH_SHORT);
-            backToast.show();
-        }
-        backPressedTime = System.currentTimeMillis();
     }
 
     @Override
@@ -246,15 +240,12 @@ public class Chat extends AppCompatActivity {
         }
     }
 
-    private void salvarConversa(Mensagem msg){
+    private void salvarConversa(Mensagem msg) {
 
         Conversa conversaRemetente = new Conversa();
         conversaRemetente.setIdRemetente(idUsuarioRemetente);
         conversaRemetente.setIdDestinatario(idUsuarioDestinatario);
         conversaRemetente.setUltimaMensagem(msg.getMensagem());
-        //FUDEU1
-        // conversaRemetente.setUsuarioExibicao(usuarioDestinatario);
-
         conversaRemetente.salvar();
 
     }
@@ -283,7 +274,7 @@ public class Chat extends AppCompatActivity {
     }
 
     private void recuperarMensagens() {
-
+        mensagens.clear();
         childEventListenerMensagens = mensagensRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {

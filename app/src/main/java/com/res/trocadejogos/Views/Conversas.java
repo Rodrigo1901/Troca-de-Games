@@ -3,19 +3,34 @@ package com.res.trocadejogos.Views;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
+import com.res.trocadejogos.Adapter.ConversasAdapter;
+import com.res.trocadejogos.Adapter.RecyclerItemClickListener;
+import com.res.trocadejogos.Classes.Conversa;
+import com.res.trocadejogos.Config.ConfigFirebase;
+import com.res.trocadejogos.Config.FirebaseUser;
 import com.res.trocadejogos.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -26,6 +41,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Conversas extends AppCompatActivity {
 
+    private List<Conversa> conversasList = new ArrayList<>();
+    private List<Conversa> conversaPosition = new ArrayList<>();
+    public static Conversa chat;
     private long backPressedTime;
     private Toast backToast;
     private String id;
@@ -35,6 +53,11 @@ public class Conversas extends AppCompatActivity {
     private StorageReference storageReference;
     private CircleImageView chatImage;
     private TextView nomeChat;
+    private RecyclerView conversas;
+    private ConversasAdapter adapter;
+    private String identificadorUsuario;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +68,10 @@ public class Conversas extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Conversas");
         setSupportActionBar(toolbar);
+
+        conversas = findViewById(R.id.recyclerListaConversas);
+        databaseReference = ConfigFirebase.getFirebaseDatabase();
+        identificadorUsuario = FirebaseUser.getIdentificadorUsuario();
 
         /*
         Intent it = getIntent();
@@ -73,6 +100,55 @@ public class Conversas extends AppCompatActivity {
         nomeChat.setText(nome);
 
          */
+
+
+        databaseReference.child("conversas").child(identificadorUsuario).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                conversasList.clear();
+                for (DataSnapshot conversaSnapShot : dataSnapshot.getChildren()) {
+                    conversasList.add(conversaSnapShot.getValue(Conversa.class));
+                }
+
+                adapter.notifyDataSetChanged();
+                conversaPosition = conversasList;
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        conversas.setLayoutManager(layoutManager);
+        conversas.setHasFixedSize(true);
+        adapter = new ConversasAdapter(conversasList, Conversas.this);
+        conversas.setAdapter(adapter);
+        conversas.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), conversas, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+
+                Conversa conversaSelecionada = conversaPosition.get(position);
+                chat = conversaSelecionada;
+                Intent it = new Intent(Conversas.this, Chat.class);
+                startActivity(it);
+
+
+            }
+
+            @Override
+            public void onLongItemClick(View view, final int position) {
+
+            }
+
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+            }
+        }));
+
+
 
         bottonNav = findViewById(R.id.bottom_navigation);
         bottonNav.setSelectedItemId(R.id.menu_chat);
