@@ -53,13 +53,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Chat extends AppCompatActivity {
 
-    private long backPressedTime;
-    private Toast backToast;
     private DatabaseReference mensagensRef;
     private ChildEventListener childEventListenerMensagens;
     private String idUsuarioRemetente;
     private String idUsuarioDestinatario;
     private String nomeUsuarioDestinatario;
+    private String nomeUsuarioRemetente;
     private DatabaseReference database;
     private StorageReference storage;
     private EditText editMensagem;
@@ -109,6 +108,19 @@ public class Chat extends AppCompatActivity {
 
         //Atualizar nome e foto do usuario destinatario na tela de chat
         textViewNome.setText(nomeUsuarioDestinatario);
+
+        database.child("users").child(idUsuarioRemetente).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String nome = dataSnapshot.child("nome").getValue(String.class);
+                nomeUsuarioRemetente = nome;
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
 
         storage.child("imagens").child("perfil").child(idUsuarioDestinatario + ".jpeg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -218,6 +230,7 @@ public class Chat extends AppCompatActivity {
             Mensagem mensagem = new Mensagem();
             mensagem.setIdUsuario(idUsuarioRemetente);
             mensagem.setMensagem(textoMensagem);
+            recyclerMensagens.smoothScrollToPosition(adapter.getItemCount());
 
             //Salvar mensagem para o remetente
             salvarMensagem(idUsuarioRemetente, idUsuarioDestinatario, mensagem);
@@ -241,6 +254,13 @@ public class Chat extends AppCompatActivity {
         conversaRemetente.setNomeDestinatario(nomeUsuarioDestinatario);
         conversaRemetente.setUltimaMensagem(msg.getMensagem());
         conversaRemetente.salvar();
+
+        Conversa conversaDestinatario = new Conversa();
+        conversaDestinatario.setIdRemetente(idUsuarioDestinatario);
+        conversaDestinatario.setIdDestinatario(idUsuarioRemetente);
+        conversaDestinatario.setNomeDestinatario(nomeUsuarioRemetente);
+        conversaDestinatario.setUltimaMensagem(msg.getMensagem());
+        conversaDestinatario.salvar();
 
     }
 
