@@ -13,6 +13,7 @@ public class Conversa {
     private String idRemetente;
     private String idDestinatario;
     private String ultimaMensagem;
+    private String nomeDestinatario;
 
     public Conversa() {
     }
@@ -49,4 +50,11 @@ public class Conversa {
         this.ultimaMensagem = ultimaMensagem;
     }
 
+    public String getNomeDestinatario() {
+        return nomeDestinatario;
+    }
+
+    public void setNomeDestinatario(String nomeDestinatario) {
+        this.nomeDestinatario = nomeDestinatario;
+    }
 }

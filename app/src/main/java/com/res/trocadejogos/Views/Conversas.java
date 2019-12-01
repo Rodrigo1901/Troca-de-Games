@@ -13,7 +13,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -21,7 +20,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.StorageReference;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.res.trocadejogos.Adapter.ConversasAdapter;
 import com.res.trocadejogos.Adapter.RecyclerItemClickListener;
 import com.res.trocadejogos.Classes.Conversa;
@@ -32,7 +31,7 @@ import com.res.trocadejogos.R;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.hdodenhof.circleimageview.CircleImageView;
+
 
 /**
  * @author Rodrigo Oliveira - rodrigoos19@gmail.com
@@ -46,16 +45,12 @@ public class Conversas extends AppCompatActivity {
     public static Conversa chat;
     private long backPressedTime;
     private Toast backToast;
-    private String id;
-    private String nome;
     private BottomNavigationView bottonNav;
     private DatabaseReference databaseReference;
-    private StorageReference storageReference;
-    private CircleImageView chatImage;
-    private TextView nomeChat;
     private RecyclerView conversas;
     private ConversasAdapter adapter;
     private String identificadorUsuario;
+    private MaterialSearchView searchView;
 
 
 
@@ -69,38 +64,11 @@ public class Conversas extends AppCompatActivity {
         toolbar.setTitle("Conversas");
         setSupportActionBar(toolbar);
 
+        searchView = findViewById(R.id.search_view);
+
         conversas = findViewById(R.id.recyclerListaConversas);
         databaseReference = ConfigFirebase.getFirebaseDatabase();
         identificadorUsuario = FirebaseUser.getIdentificadorUsuario();
-
-        /*
-        Intent it = getIntent();
-        id = it.getStringExtra("id");
-        nome = it.getStringExtra("nome");
-
-        databaseReference = ConfigFirebase.getFirebaseDatabase();
-        storageReference = ConfigFirebase.getFirebaseStorage();
-
-        chatImage = findViewById(R.id.chatImage);
-        nomeChat = findViewById(R.id.chatName);
-
-
-        storageReference.child("imagens").child("perfil").child(id + ".jpeg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Glide.with(Conversas.this).load(uri).into(chatImage);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                chatImage.setImageResource(R.drawable.blank_profile_picture);
-            }
-        });
-
-        nomeChat.setText(nome);
-
-         */
-
 
         databaseReference.child("conversas").child(identificadorUsuario).addValueEventListener(new ValueEventListener() {
             @Override
@@ -129,11 +97,9 @@ public class Conversas extends AppCompatActivity {
             @Override
             public void onItemClick(View view, int position) {
 
-                Conversa conversaSelecionada = conversaPosition.get(position);
-                chat = conversaSelecionada;
+                chat = conversaPosition.get(position);
                 Intent it = new Intent(Conversas.this, Chat.class);
                 startActivity(it);
-
 
             }
 
@@ -148,6 +114,37 @@ public class Conversas extends AppCompatActivity {
             }
         }));
 
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                if (query != null && !query.isEmpty()) {
+                    pesquisarConversas(query.toLowerCase());
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (newText != null && !newText.isEmpty()) {
+                    pesquisarConversas(newText.toLowerCase());
+                }
+
+                return true;
+            }
+        });
+
+        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+            @Override
+            public void onSearchViewShown() {
+
+            }
+
+            @Override
+            public void onSearchViewClosed() {
+                reloadConversas();
+
+            }
+        });
 
 
         bottonNav = findViewById(R.id.bottom_navigation);
@@ -170,11 +167,36 @@ public class Conversas extends AppCompatActivity {
         });
     }
 
+    public void pesquisarConversas(String texto) {
+        final List<Conversa> searchConversasList = new ArrayList<>();
+        for (Conversa conversa : conversasList) {
+            String nome = conversa.getNomeDestinatario().toLowerCase();
+            if (nome.contains(texto)) {
+                searchConversasList.add(conversa);
+            }
+        }
+
+        adapter = new ConversasAdapter(searchConversasList, Conversas.this);
+        conversas.setAdapter(adapter);
+        conversaPosition = searchConversasList;
+        adapter.notifyDataSetChanged();
+    }
+
+    public void reloadConversas() {
+        adapter = new ConversasAdapter(conversasList, Conversas.this);
+        conversas.setAdapter(adapter);
+        conversaPosition = conversasList;
+        adapter.notifyDataSetChanged();
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_conversas, menu);
+
+        MenuItem item = menu.findItem(R.id.menuPesquisa);
+        searchView.setMenuItem(item);
 
         return super.onCreateOptionsMenu(menu);
     }

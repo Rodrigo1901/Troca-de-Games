@@ -80,8 +80,13 @@ public class Chat extends AppCompatActivity {
         //Recuperar dados do usuario destinatario
         Intent it = getIntent();
         idUsuarioDestinatario = it.getStringExtra("id");
-        idUsuarioDestinatario = Conversas.chat.getIdDestinatario();
+        if(idUsuarioDestinatario == null){
+            idUsuarioDestinatario = Conversas.chat.getIdDestinatario();
+        }
         nomeUsuarioDestinatario = it.getStringExtra("nome");
+        if(nomeUsuarioDestinatario == null){
+            nomeUsuarioDestinatario = Conversas.chat.getNomeDestinatario();
+        }
 
         //Configurando toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -101,19 +106,6 @@ public class Chat extends AppCompatActivity {
 
         //Recuperar dados do usuario remetente
         idUsuarioRemetente = FirebaseUser.getIdentificadorUsuario();
-
-        database.child("users").child(idUsuarioDestinatario).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String nome = dataSnapshot.child("nome").getValue(String.class);
-                nomeUsuarioDestinatario = nome;
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
 
         //Atualizar nome e foto do usuario destinatario na tela de chat
         textViewNome.setText(nomeUsuarioDestinatario);
@@ -140,6 +132,7 @@ public class Chat extends AppCompatActivity {
         recyclerMensagens.setLayoutManager(layoutManager);
         recyclerMensagens.setHasFixedSize(true);
         recyclerMensagens.setAdapter(adapter);
+
 
         mensagensRef = database.child("mensagens").child(idUsuarioRemetente).child(idUsuarioDestinatario);
 
@@ -245,6 +238,7 @@ public class Chat extends AppCompatActivity {
         Conversa conversaRemetente = new Conversa();
         conversaRemetente.setIdRemetente(idUsuarioRemetente);
         conversaRemetente.setIdDestinatario(idUsuarioDestinatario);
+        conversaRemetente.setNomeDestinatario(nomeUsuarioDestinatario);
         conversaRemetente.setUltimaMensagem(msg.getMensagem());
         conversaRemetente.salvar();
 

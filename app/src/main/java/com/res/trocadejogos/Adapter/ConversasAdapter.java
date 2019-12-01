@@ -36,7 +36,6 @@ public class ConversasAdapter extends RecyclerView.Adapter<ConversasAdapter.MyVi
     private List<Conversa> conversas;
     private Context context;
     private StorageReference storageReference;
-    private DatabaseReference databaseReference;
 
     public ConversasAdapter(List<Conversa> lista, Context c) {
         this.conversas = lista;
@@ -54,20 +53,7 @@ public class ConversasAdapter extends RecyclerView.Adapter<ConversasAdapter.MyVi
 
         Conversa conversa = conversas.get(position);
         holder.ultimaMensagem.setText(conversa.getUltimaMensagem());
-
-        databaseReference = ConfigFirebase.getFirebaseDatabase();
-        databaseReference.child("users").child(conversa.getIdDestinatario()).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String nome = dataSnapshot.child("nome").getValue(String.class);
-                holder.nome.setText(nome);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+        holder.nome.setText(conversa.getNomeDestinatario());
 
         storageReference = ConfigFirebase.getFirebaseStorage();
         storageReference.child("imagens").child("perfil").child(conversa.getIdDestinatario() + ".jpeg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -76,7 +62,6 @@ public class ConversasAdapter extends RecyclerView.Adapter<ConversasAdapter.MyVi
                 Glide.with(context).load(uri).into(holder.foto);
             }
         });
-
 
     }
 
