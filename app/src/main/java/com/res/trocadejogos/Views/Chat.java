@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -33,7 +32,6 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.res.trocadejogos.Adapter.MensagensAdapter;
 import com.res.trocadejogos.Classes.Conversa;
-import com.res.trocadejogos.Classes.Game;
 import com.res.trocadejogos.Classes.Mensagem;
 import com.res.trocadejogos.Config.ConfigFirebase;
 import com.res.trocadejogos.Config.FirebaseUser;
@@ -79,11 +77,11 @@ public class Chat extends AppCompatActivity {
         //Recuperar dados do usuario destinatario
         Intent it = getIntent();
         idUsuarioDestinatario = it.getStringExtra("id");
-        if(idUsuarioDestinatario == null){
+        if (idUsuarioDestinatario == null) {
             idUsuarioDestinatario = Conversas.chat.getIdDestinatario();
         }
         nomeUsuarioDestinatario = it.getStringExtra("nome");
-        if(nomeUsuarioDestinatario == null){
+        if (nomeUsuarioDestinatario == null) {
             nomeUsuarioDestinatario = Conversas.chat.getNomeDestinatario();
         }
 
@@ -122,7 +120,6 @@ public class Chat extends AppCompatActivity {
             }
         });
 
-
         storage.child("imagens").child("perfil").child(idUsuarioDestinatario + ".jpeg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
@@ -135,7 +132,6 @@ public class Chat extends AppCompatActivity {
             }
         });
 
-
         //Configuração adapter
         adapter = new MensagensAdapter(mensagens, getApplicationContext());
 
@@ -144,7 +140,6 @@ public class Chat extends AppCompatActivity {
         recyclerMensagens.setLayoutManager(layoutManager);
         recyclerMensagens.setHasFixedSize(true);
         recyclerMensagens.setAdapter(adapter);
-
 
         mensagensRef = database.child("mensagens").child(idUsuarioRemetente).child(idUsuarioDestinatario);
 
@@ -178,7 +173,7 @@ public class Chat extends AppCompatActivity {
 
                     //Recuperar os dados da imagem para o Firebase
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    imagem.compress(Bitmap.CompressFormat.JPEG, 50, baos);
+                    imagem.compress(Bitmap.CompressFormat.JPEG, 70, baos);
                     byte[] dadosImagem = baos.toByteArray();
 
                     //Criando nome da imagem
@@ -248,6 +243,7 @@ public class Chat extends AppCompatActivity {
 
     private void salvarConversa(Mensagem msg) {
 
+        //Salvando conversa para o remetente
         Conversa conversaRemetente = new Conversa();
         conversaRemetente.setIdRemetente(idUsuarioRemetente);
         conversaRemetente.setIdDestinatario(idUsuarioDestinatario);
@@ -255,13 +251,13 @@ public class Chat extends AppCompatActivity {
         conversaRemetente.setUltimaMensagem(msg.getMensagem());
         conversaRemetente.salvar();
 
+        //Salvando conversa para o destinatario
         Conversa conversaDestinatario = new Conversa();
         conversaDestinatario.setIdRemetente(idUsuarioDestinatario);
         conversaDestinatario.setIdDestinatario(idUsuarioRemetente);
         conversaDestinatario.setNomeDestinatario(nomeUsuarioRemetente);
         conversaDestinatario.setUltimaMensagem(msg.getMensagem());
         conversaDestinatario.salvar();
-
     }
 
     private void salvarMensagem(String idRemetente, String idDestinatario, Mensagem msg) {

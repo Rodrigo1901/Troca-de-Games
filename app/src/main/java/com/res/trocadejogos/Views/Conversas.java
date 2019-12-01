@@ -31,8 +31,6 @@ import com.res.trocadejogos.R;
 import java.util.ArrayList;
 import java.util.List;
 
-
-
 /**
  * @author Rodrigo Oliveira - rodrigoos19@gmail.com
  * @author Samuel Santana - samuel.santana1997@gmail.com
@@ -51,8 +49,6 @@ public class Conversas extends AppCompatActivity {
     private ConversasAdapter adapter;
     private String identificadorUsuario;
     private MaterialSearchView searchView;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,7 +141,6 @@ public class Conversas extends AppCompatActivity {
 
             }
         });
-
 
         bottonNav = findViewById(R.id.bottom_navigation);
         bottonNav.setSelectedItemId(R.id.menu_chat);

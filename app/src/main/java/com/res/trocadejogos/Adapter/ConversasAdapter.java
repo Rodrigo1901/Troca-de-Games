@@ -7,18 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 import com.res.trocadejogos.Classes.Conversa;
-import com.res.trocadejogos.Classes.Usuario;
 import com.res.trocadejogos.Config.ConfigFirebase;
 import com.res.trocadejogos.R;
 
@@ -62,7 +56,6 @@ public class ConversasAdapter extends RecyclerView.Adapter<ConversasAdapter.MyVi
                 Glide.with(context).load(uri).into(holder.foto);
             }
         });
-
     }
 
     @Override
