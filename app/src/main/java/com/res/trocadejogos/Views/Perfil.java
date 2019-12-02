@@ -14,6 +14,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -154,9 +155,14 @@ public class Perfil extends AppCompatActivity {
             public void onClick(View view) {
 
                 String nome = nameField.getText().toString();
-                usuarioLogado.setNome(nome);
-                usuarioLogado.atualizarNome();
-                Toast.makeText(Perfil.this, "Nome atualizado", Toast.LENGTH_SHORT).show();
+                if(isCampoVazio(nome)){
+                    Toast.makeText(Perfil.this, "Nome inválido", Toast.LENGTH_SHORT).show();
+                }else{
+                    usuarioLogado.setNome(nome);
+                    usuarioLogado.atualizarNome();
+                    Toast.makeText(Perfil.this, "Nome atualizado", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
@@ -165,9 +171,13 @@ public class Perfil extends AppCompatActivity {
             public void onClick(View view) {
 
                 String cep = cepField.getText().toString();
-                usuarioLogado.setCep(cep);
-                usuarioLogado.atualizarCep();
-                Toast.makeText(Perfil.this, "CEP atualizado", Toast.LENGTH_SHORT).show();
+                if(isCampoVazio(cep)){
+                    Toast.makeText(Perfil.this, "CEP inválido", Toast.LENGTH_SHORT).show();
+                }else {
+                    usuarioLogado.setCep(cep);
+                    usuarioLogado.atualizarCep();
+                    Toast.makeText(Perfil.this, "CEP atualizado", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -274,6 +284,12 @@ public class Perfil extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }
+
+    private boolean isCampoVazio(String valor) {
+
+        boolean resultado = (TextUtils.isEmpty(valor) || valor.trim().isEmpty());
+        return resultado;
     }
 
     @Override
